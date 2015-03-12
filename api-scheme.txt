@@ -1,0 +1,8 @@
+/api/photos         GET     Get array of all photos
+/api/photos/:id     GET     Get photo with :id
+/api/photos         POST    Add a photo and return photo with id
+/api/photos/:id     PUT     Update photo with :id
+/api/photos/:id     DELETE  Delete photo with :id
+
+/api/:user          GET     View user profile
+/api/:user/photos   GET     Get array of photos takenBy :user

@@ -11,5 +11,14 @@ app.PhotoView = Backbone.View.extend({
         this.$el.html(this.template(this.model.attributes));
 
         return this;
+    },
+
+    events: {
+        'click .delete': 'deletePhoto'
+    },
+
+    deletePhoto: function() {
+        this.model.destroy();
+        this.remove();
     }
 });

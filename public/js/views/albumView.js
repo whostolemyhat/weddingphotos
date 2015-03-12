@@ -5,6 +5,7 @@ app.AlbumView = Backbone.View.extend({
 
     initialize: function(initialPhotos) {
         this.collection = new app.Album(initialPhotos);
+        this.listenTo(this.collection, 'add', this.renderPhoto);
         this.render();
     },
 
@@ -21,5 +22,22 @@ app.AlbumView = Backbone.View.extend({
             model: item
         });
         this.$el.append(photoView.render().el);
+    },
+
+    events: {
+        'click #add': 'addPhoto'
+    },
+
+    addPhoto: function(e) {
+        e.preventDefault();
+
+        var formData = {};
+        $('#addPhoto div').children('input').each(function(i, el) {
+            if ($(el).val() !== '') {
+                formData[el.id] = $(el).val();
+            }
+        });
+
+        this.collection.add(new app.Photo(formData));
     }
 });
