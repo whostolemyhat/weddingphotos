@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API schema</title>
+</head>
+<body>
+    <table class="table">
+        <tr>
+            <th>Route</th>
+            <th>Method</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><a href="/api/photos">/api/photos</a></td>
+            <td>GET</td>
+            <td>Get array of all photos</td>
+        </tr>
+        <tr>
+            <td><a href="/api/photos/">/api/photos/</a></td>
+            <td>POST</td>
+            <td>Add a photo and return id</td>
+        </tr>
+        <tr>
+            <td><a href="/api/photos/:id">/api/photos/:id</a></td>
+            <td>GET</td>
+            <td>Get photo by :id</td>
+        </tr>
+        <tr>
+            <td><a href="/api/photos/:id">/api/photos/:id</a></td>
+            <td>PUT</td>
+            <td>Update photo with :id</td>
+        </tr>
+        <tr>
+            <td><a href="/api/photos/:id">/api/photos/:id</a></td>
+            <td>DELETE</td>
+            <td>Delete photo with :id</td>
+        </tr>
+        <tr>
+            <td><a href="/api/photos/:id">/api/:user</a></td>
+            <td>GET</td>
+            <td>View user</td>
+        </tr>
+        <tr>
+            <td><a href="/api/photos/:id">/api/:user/photos</a></td>
+            <td>GET</td>
+            <td>Get array of photos takenBy :user</td>
+        </tr>
+    </table>
+</body>
+</html>
