@@ -3,9 +3,11 @@ var app = app || {};
 app.AlbumView = Backbone.View.extend({
     el: '#photos',
 
-    initialize: function(initialPhotos) {
-        this.collection = new app.Album(initialPhotos);
+    initialize: function() {
+        this.collection = new app.Album();
+        this.collection.fetch({ reset: true }); // get photos from api
         this.listenTo(this.collection, 'add', this.renderPhoto);
+        this.listenTo(this.collection, 'reset', this.render);
         this.render();
     },
 

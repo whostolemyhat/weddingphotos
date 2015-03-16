@@ -19,11 +19,12 @@
             
             <figcaption class="image--caption"><%= caption %></figcaption>
         </figure>
-        <aside class="image--meta">Taken by <%= takenBy %> on <%= date %></aside>
+        <aside class="image--meta">Taken by <%= takenBy %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
         <button class="delete">Delete</button>
     </script>
 
     <script src="js/lib/jquery-2.1.3.min.js"></script>
+    <script src="js/lib/jquery-dateFormat.min.js"></script>
     <script src="js/lib/underscore-min.js"></script>
     <script src="js/lib/backbone-min.js"></script>
 
