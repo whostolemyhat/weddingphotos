@@ -2,12 +2,36 @@ var app = app || {};
 
 app.AlbumView = Backbone.View.extend({
     el: '#photos',
+    files: '',
 
     initialize: function() {
+        'use strict';
         this.collection = new app.Album();
         this.collection.fetch({ reset: true }); // get photos from api
         this.listenTo(this.collection, 'add', this.renderPhoto);
         this.listenTo(this.collection, 'reset', this.render);
+
+        // jQuery wom't work
+        // var fileInput = document.getElementById('photo');
+        // var form = document.getElementById('addPhoto');
+        // fileInput.addEventListener('change', this.prepareUpload);
+
+        // fileInput.addEventListener('change', function(e) {
+        //     var reader = new FileReader();
+
+        //     for(var i = 0; i < fileInput.files.length; i++) {
+        //         var file = fileInput.files[i];
+        //         form.appendChild('<input type="hidden" id="fileData' + i + '">');
+        //         form.appendChild('<input type="hidden" id="fileName' + i + '">');
+
+        //         reader.onload = function(e) {
+        //             $('#fileData' + i).val(reader.result);
+        //             $('#fileName' + i).val(file.name);
+        //         };
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
+
         this.render();
     },
 
@@ -31,15 +55,59 @@ app.AlbumView = Backbone.View.extend({
     },
 
     addPhoto: function(e) {
+        'use strict';
         e.preventDefault();
+        e.stopPropagation();
+        console.log(app.AlbumView.files);
 
-        var formData = {};
+        // loading spinner
+
+        // var formData = {};
+        // $('#addPhoto div').children('input').each(function(i, el) {
+        //     if ($(el).val() !== '') {
+        //         formData[el.id] = $(el).val();
+        //     }
+        // });
+
+        // console.log(formData);
+
+        // // this.collection.add(new app.Photo(formData));
+        // this.collection.create(formData);
+        var data = new FormData();
+        // $.each(app.AlbumView.files, function(key, value) {
+        var fileInput = document.getElementById('photo');
+        var files = fileInput.files;
+        for(var i = 0; i < files.length; i++) {
+            var file = files[i];
+            console.log(file.type);
+            if(!file.type.match('image.*')) {
+                continue;
+            }
+            data.append('photos[]', file, file.name);
+        }
+
         $('#addPhoto div').children('input').each(function(i, el) {
-            if ($(el).val() !== '') {
-                formData[el.id] = $(el).val();
+            if ($(el).val() !== '' && $(el).attr('id') !== 'photo') {
+                data.append(el.id, $(el).val());
             }
         });
-
-        this.collection.add(new app.Photo(formData));
+        console.log(data);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/photos/', true);
+        xhr.onload = function() {
+            if(xhr.status === 200) {
+                // it worked
+                console.log('success');
+            } else {
+                console.error(xhr.status);
+            }
+        };
+        xhr.send(data);
+        // this.collection.create(data);
     }
+
+    // prepareUpload: function(e) {
+    //     'use strict';
+    //     app.AlbumView.files = e.target.files;
+    // }
 });

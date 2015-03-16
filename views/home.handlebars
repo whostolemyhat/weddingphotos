@@ -1,12 +1,18 @@
 
     <div id="photos">
-        <form action="#" id="addPhoto">
+        <form action="#" id="addPhoto" enctype="multipart/form-data">
             <div>
                 <label for="photo">Photo</label>
-                <input type="file" id="photo">
+                <input type="file" id="photo" name="photo" multiple="multiple">
+    
+                <input type="hidden" name="fileData" id="fileData">
+                <input type="hidden" name="fileName" id="fileName">
 
                 <label for="caption">Caption</label>
-                <input type="text" id="caption">
+                <input type="text" id="caption" name="caption">
+
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date">
 
                 <button id="add">Upload</button>
             </div>
@@ -15,11 +21,12 @@
 
     <script id="photoTemplate" type="text/template">
         <figure class="image">
-            <img src="<%= photo %>" class="image--photo" />
+            <img src="<%= path %>" class="image--photo" />
             
             <figcaption class="image--caption"><%= caption %></figcaption>
         </figure>
         <aside class="image--meta">Taken by <%= takenBy %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
+        <button class="update">Update</button>
         <button class="delete">Delete</button>
     </script>
 

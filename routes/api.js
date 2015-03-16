@@ -24,69 +24,106 @@ router
             }
         });
     })
+    // json/base64 form
+    // .post('/photos', function(req, res) {
+    //     'use strict';
+
+    //     console.log('posted form');
+
+    //     var data_url = req.body.fileData;
+    //     //strip out all of the meta data otherwise write fails
+    //     var matches = data_url.match(/^data:.+\/(.+);base64,(.*)$/);
+    //     var base64_data = matches[2];
+
+    //     var buffer = new Buffer(base64_data, 'base64');
+    //     var date = new Date();
+    //     var filename = date.getTime() + '-' + req.body.fileName;
+    //     var newLocation = 'public/uploads/';
+
+    //     fs.writeFile(newLocation + filename, buffer, function(err) {
+    //         console.log('writing file');
+    //         if(err) {
+    //             console.error(err);
+    //         } else {
+    //             console.log('success');
+
+    //             // create thumbnail
+    //             createThumbnail(newLocation, filename);
+    //         }
+    //     });
+
+    //     var photo = new Photo({
+    //         path: '/uploads/' + filename,
+    //         caption: req.body.caption,
+    //         takenBy: req.body.takenBy,
+    //         thumbnail: '/uploads/thumbs/' + filename,
+    //         date: date
+    //     });
+
+    //     return photo.save(function(err) {
+    //         if(err) {
+    //             console.error(err);
+    //         } else {
+    //             return res.send(photo);
+    //         }
+    //     });
+    // })
     .post('/photos', function(req, res) {
         'use strict';
 
+        console.log('posted form');
+        var photos = [];
+
         var form = new formidable.IncomingForm();
         var files = [];
-        var fields = {};
+        var fields = [];
 
         form.on('field', function(field, value) {
-            fields[field] = value;
+            fields[field] =  value;
         });
 
         form.on('file', function(field, file) {
-            files.push([field, file]);
+            console.log(file.name);
+            files[field] = file;
         });
 
         form.on('end', function() {
-            // save file
-            var tempPath = this.openedFiles[0].path;
-            var date = new Date();
-            var filename = date.getTime() + '-' + this.openedFiles[0].name;
-            var newLocation = 'public/uploads/';
+            console.log(this.openedFiles.length);
+            for(var i = 0; i < this.openedFiles.length; i++) {
+                console.log(this.openedFiles[i]);
+                var tempPath = this.openedFiles[i].path;
+                var date = new Date();
+                var filename = date.getTime() + '-' + this.openedFiles[i].name;
+                var newLocation = 'public/uploads/';
 
-            fs.copy(tempPath, newLocation + filename, function(err) {
-                if(err) {
-                    console.error(err);
-                } else {
-                    console.log('success');
+                fs.copy(tempPath, newLocation + filename, function(err) {
+                    if(err) {
+                        console.error(err);
+                    } else {
+                        console.log('success');
+                        // create thumbnail
+                        createThumbnail(newLocation, filename);
+                    }
+                });
 
-                    // create thumbnail
-                    lwip.open(newLocation + filename, function(err, image) {
-                        if(err) {
-                            console.error(err);
-                        } else {
-                            image.batch()
-                                .scale(0.5)
-                                .crop(200, 200)
-                                .writeFile(newLocation + '/thumbs/' + filename, function(err) {
-                                    if(err) {
-                                        console.error(err);
-                                    } else {
-                                        console.log('successfully created thumbnail');
-                                    }
-                                });
-                        }
-                    });
-                }
-            });
+                var photo = new Photo({
+                    path: '/uploads/' + filename,
+                    caption: fields.caption,
+                    takenBy: fields.takenBy,
+                    thumbnail: '/uploads/thumbs/' + filename,
+                    date: date
+                });
 
-            var photo = new Photo({
-                path: newLocation + filename,
-                caption: fields.caption,
-                takenBy: fields.takenBy,
-                thumbnail: newLocation + '/thumbs/' + filename,
-                date: date
-            });
-
-            return photo.save(function(err) {
-                if(err) {
-                    console.error(err);
-                } else {
-                    return res.send(photo);
-                }
-            });
+                photo.save(function(err) {
+                    if(err) {
+                        console.error(err);
+                    } else {
+                        photos.push(photo);
+                    }
+                });
+            }
+            
+            res.send(photos);
         });
 
         form.parse(req);
@@ -112,6 +149,7 @@ router
 
                 photo.caption = fields.caption;
                 photo.takenBy = fields.takenBy;
+                photo.date = fields.date;
 
                 return photo.save(function(err) {
                     if(err) {
@@ -130,10 +168,30 @@ router
                 if(err) {
                     console.error(err);
                 } else {
-                    return response.send('');
+                    return res.send('');
                 }
             });
         });
     });
+
+function createThumbnail(path, filename) {
+    'use strict';
+    lwip.open(path + filename, function(err, image) {
+        if(err) {
+            console.error(err);
+        } else {
+            image.batch()
+                .scale(0.5)
+                .crop(200, 200)
+                .writeFile('public/uploads/thumbs/' + filename, function(err) {
+                    if(err) {
+                        console.error(err);
+                    } else {
+                        console.log('successfully created thumbnail');
+                    }
+                });
+        }
+    });
+}
 
 module.exports = router;
