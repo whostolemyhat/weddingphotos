@@ -14,7 +14,10 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 var handlebars = require('express-handlebars')
-    .create({ defaultLayout: 'main' });
+    .create({
+        defaultLayout: 'main',
+        layoutsDir: path.join(__dirname, 'views/layouts')
+    });
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
@@ -29,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
- 
+
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
