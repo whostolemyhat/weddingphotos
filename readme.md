@@ -1,7 +1,7 @@
 #Photo upload site
 
 A webapp created to allow guests at my wedding to upload photos they take.
- 
+
 Runs on Node, Express, Mongo and Backbone (MEBN?).
 
 ##Installation
