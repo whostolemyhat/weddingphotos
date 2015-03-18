@@ -92,39 +92,32 @@ router
             var tempPath = this.openedFiles[0].path;
             var date = new Date();
             var filename = date.getTime() + '-' + this.openedFiles[0].name;
-            var newLocation = 'public/uploads/';
+            var newLocation = 'uploads/';
 
-            fs.mkdirs(newLocation, function(err) {
+            fs.copy(tempPath, newLocation + filename, function(err) {
                 if(err) {
-                    console.log('err making dir ' + err);
+                    console.log(err);
                     return console.error(err);
                 }
+                console.log('success');
+                // create thumbnail
+                createThumbnail(newLocation, filename);
+            });
 
-                fs.copy(tempPath, newLocation + filename, function(err) {
-                    if(err) {
-                        console.log(err);
-                        return console.error(err);
-                    }
-                    console.log('success');
-                    // create thumbnail
-                    createThumbnail(newLocation, filename);
-                });
+            var photo = new Photo({
+                path: '/uploads/' + filename,
+                caption: fields.caption,
+                takenBy: fields.takenBy,
+                thumbnail: '/uploads/thumbs/' + filename,
+                date: date
+            });
 
-                var photo = new Photo({
-                    path: '/uploads/' + filename,
-                    caption: fields.caption,
-                    takenBy: fields.takenBy,
-                    thumbnail: '/uploads/thumbs/' + filename,
-                    date: date
-                });
-
-                return photo.save(function(err) {
-                    if(err) {
-                        console.log(err);
-                        return console.error(err);
-                    }
-                    return res.send(photo);
-                });
+            return photo.save(function(err) {
+                if(err) {
+                    console.log(err);
+                    return console.error(err);
+                }
+                return res.send(photo);
             });
 
         });
