@@ -30,3 +30,5 @@ node_modules
 # config
 config/
 config/database.js
+
+/public/uploads
