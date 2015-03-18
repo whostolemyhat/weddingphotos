@@ -4,6 +4,7 @@ var Photo = require('../schemas/photo');
 var formidable = require('formidable');
 var fs = require('fs-extra');
 var lwip = require('lwip');
+var path = require('path');
 
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
@@ -92,7 +93,7 @@ router
             var tempPath = this.openedFiles[0].path;
             var date = new Date();
             var filename = date.getTime() + '-' + this.openedFiles[0].name;
-            var newLocation = './public/uploads/';
+            var newLocation = path.join(__dirname, 'public/uploads/');
 
 
             // fs.copySync(tempPath, newLocation + filename, function(err) {
