@@ -94,7 +94,9 @@ router
             var filename = date.getTime() + '-' + this.openedFiles[0].name;
             var newLocation = './public/uploads/';
 
-            fs.copySync(tempPath, newLocation + filename, function(err) {
+
+            // fs.copySync(tempPath, newLocation + filename, function(err) {
+            copyFile(tempPath, newLocation + filename, function(err) {
                 if(err) {
                     console.log(err);
                     return console.error(err);
@@ -190,6 +192,32 @@ function createThumbnail(path, filename) {
                 });
         }
     });
+}
+
+function copyFile(source, target, callback) {
+    'use strict';
+    var called = false;
+
+    var read = fs.createReadStream(source);
+    read.on('error', function(err) {
+        done(err);
+    });
+
+    var write = fs.createWriteStream(target);
+    write.on('error', function(err) {
+        done(err);
+    });
+    write.on('close', function(ex) {
+        done();
+    });
+    read.pipe(write);
+
+    function done(err) {
+        if(!called) {
+            callback(err);
+            called = true;
+        }
+    }
 }
 
 module.exports = router;
