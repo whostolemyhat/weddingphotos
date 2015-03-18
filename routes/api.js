@@ -76,7 +76,7 @@ router
 
         var form = new formidable.IncomingForm();
         var files = [];
-        var fields = [];
+        var fields = {};
 
         form.on('field', function(field, value) {
             fields[field] =  value;
@@ -84,46 +84,43 @@ router
 
         form.on('file', function(field, file) {
             console.log(file.name);
-            files[field] = file;
+            files.push([field, file]);
         });
 
         form.on('end', function() {
-            console.log(this.openedFiles.length);
-            for(var i = 0; i < this.openedFiles.length; i++) {
-                console.log(this.openedFiles[i]);
-                var tempPath = this.openedFiles[i].path;
-                var date = new Date();
-                var filename = date.getTime() + '-' + this.openedFiles[i].name;
-                var newLocation = 'public/uploads/';
+            // for(var i = 0; i < this.openedFiles.length; i++) {
+            var tempPath = this.openedFiles[0].path;
+            var date = new Date();
+            var filename = date.getTime() + '-' + this.openedFiles[0].name;
+            var newLocation = 'public/uploads/';
 
-                fs.copy(tempPath, newLocation + filename, function(err) {
-                    if(err) {
-                        console.error(err);
-                    } else {
-                        console.log('success');
-                        // create thumbnail
-                        createThumbnail(newLocation, filename);
-                    }
-                });
+            fs.copy(tempPath, newLocation + filename, function(err) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    console.log('success');
+                    // create thumbnail
+                    createThumbnail(newLocation, filename);
+                }
+            });
 
-                var photo = new Photo({
-                    path: '/uploads/' + filename,
-                    caption: fields.caption,
-                    takenBy: fields.takenBy,
-                    thumbnail: '/uploads/thumbs/' + filename,
-                    date: date
-                });
+            var photo = new Photo({
+                path: '/uploads/' + filename,
+                caption: fields.caption,
+                takenBy: fields.takenBy,
+                thumbnail: '/uploads/thumbs/' + filename,
+                date: date
+            });
 
-                photo.save(function(err) {
-                    if(err) {
-                        console.error(err);
-                    } else {
-                        photos.push(photo);
-                    }
-                });
-            }
-            
-            res.send(photos);
+            return photo.save(function(err) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    res.send(photo);
+                }
+            });
+            // }
+            // res.send(photos);
         });
 
         form.parse(req);
