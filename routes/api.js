@@ -96,12 +96,12 @@ router
 
             fs.copy(tempPath, newLocation + filename, function(err) {
                 if(err) {
-                    console.error(err);
-                } else {
-                    console.log('success');
-                    // create thumbnail
-                    createThumbnail(newLocation, filename);
+                    console.log(err);
+                    return console.error(err);
                 }
+                console.log('success');
+                // create thumbnail
+                createThumbnail(newLocation, filename);
             });
 
             var photo = new Photo({
@@ -114,10 +114,10 @@ router
 
             return photo.save(function(err) {
                 if(err) {
-                    console.error(err);
-                } else {
-                    res.send(photo);
+                    console.log(err);
+                    return console.error(err);
                 }
+                return res.send(photo);
             });
             // }
             // res.send(photos);
@@ -129,6 +129,7 @@ router
         'use strict';
         return Photo.findById(req.params.id, function(err, photo) {
             if(err) {
+                console.log(err);
                 console.error(err);
             } else {
                 return res.send(photo);
@@ -150,6 +151,7 @@ router
 
                 return photo.save(function(err) {
                     if(err) {
+                        console.log(err);
                         console.error(err);
                     } else {
                         return res.send(photo);
