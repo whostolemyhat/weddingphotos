@@ -175,9 +175,9 @@ router
         });
     });
 
-function createThumbnail(path, filename) {
+function createThumbnail(filepath, filename) {
     'use strict';
-    lwip.open(path + filename, function(err, image) {
+    lwip.open(filepath + filename, function(err, image) {
         if(err) {
             console.error(err);
         } else {
