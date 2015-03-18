@@ -184,7 +184,7 @@ function createThumbnail(path, filename) {
             image.batch()
                 .scale(0.5)
                 .crop(200, 200)
-                .writeFile('public/uploads/thumbs/' + filename, function(err) {
+                .writeFile(path.join(__dirname, '../public/uploads/thumbs/') + filename, function(err) {
                     if(err) {
                         console.error(err);
                     } else {
@@ -195,30 +195,30 @@ function createThumbnail(path, filename) {
     });
 }
 
-function copyFile(source, target, callback) {
-    'use strict';
-    var called = false;
+// function copyFile(source, target, callback) {
+//     'use strict';
+//     var called = false;
 
-    var read = fs.createReadStream(source);
-    read.on('error', function(err) {
-        done(err);
-    });
+//     var read = fs.createReadStream(source);
+//     read.on('error', function(err) {
+//         done(err);
+//     });
 
-    var write = fs.createWriteStream(target);
-    write.on('error', function(err) {
-        done(err);
-    });
-    write.on('close', function(ex) {
-        done();
-    });
-    read.pipe(write);
+//     var write = fs.createWriteStream(target);
+//     write.on('error', function(err) {
+//         done(err);
+//     });
+//     write.on('close', function(ex) {
+//         done();
+//     });
+//     read.pipe(write);
 
-    function done(err) {
-        if(!called) {
-            callback(err);
-            called = true;
-        }
-    }
-}
+//     function done(err) {
+//         if(!called) {
+//             callback(err);
+//             called = true;
+//         }
+//     }
+// }
 
 module.exports = router;
