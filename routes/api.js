@@ -93,7 +93,7 @@ router
             var tempPath = this.openedFiles[0].path;
             var date = new Date();
             var filename = date.getTime() + '-' + this.openedFiles[0].name;
-            var newLocation = path.join(__dirname, 'public/uploads/');
+            var newLocation = path.join(__dirname, '../public/uploads/');
 
 
             // fs.copySync(tempPath, newLocation + filename, function(err) {
