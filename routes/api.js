@@ -96,8 +96,8 @@ router
             var newLocation = path.join(__dirname, '../public/uploads/');
 
 
-            // fs.copySync(tempPath, newLocation + filename, function(err) {
-            copyFile(tempPath, newLocation + filename, function(err) {
+            fs.copy(tempPath, newLocation + filename, function(err) {
+            // copyFile(tempPath, newLocation + filename, function(err) {
                 if(err) {
                     console.log(err);
                     return console.error(err);
