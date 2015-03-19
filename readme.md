@@ -28,3 +28,4 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 - use username on img
 - multi-img upload
 - socket.io - emit event when photo is saved
+- set up mongo on webfaction

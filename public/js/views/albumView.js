@@ -37,6 +37,11 @@ app.AlbumView = Backbone.View.extend({
     },
 
     render: function() {
+        // this.collection.comparator = function(model) {
+        //     return model.get('date');
+        // };
+        // this.collection.sort();
+
         this.collection.each(function(item) {
             this.renderPhoto(item);
         }, this);
@@ -116,7 +121,7 @@ app.AlbumView = Backbone.View.extend({
     afterSuccess: function(responseText, statusText, xhr, el) {
         console.log(responseText, statusText, xhr, el);
         $('.upload__output').html('Finished uploading!');
-        // $('.progress').addClass('fadeOut');
+        this.collection.reset();
     }
 
 

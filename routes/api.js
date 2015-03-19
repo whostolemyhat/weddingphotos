@@ -38,7 +38,7 @@ router
     })
     .get('/photos', function(req, res) {
         'use strict';
-        return Photo.find(function(err, photos) {
+        return Photo.find().sort({ date: -1 }).exec(function(err, photos) {
             if(err) {
                 console.error(err);
             } else {
