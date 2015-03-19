@@ -34,6 +34,7 @@ gulp.task('js', function() {
         'public/js/views/*.js',
         'public/js/collections/*.js',
         'public/js/*.js',
+        '!public/js/upload.js'
     ])
         .pipe(jshint())
         .pipe(jshint.reporter('default'))

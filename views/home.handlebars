@@ -22,7 +22,8 @@
         <span>Allowed: jpg, jpeg png, gif</span>
         <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="upload--form">
             <input type="file" name="photo" id="photo">
-            <input type="submit" value="Upload" id="submit" class="button">
+            {{!-- <input type="submit" value="Upload" id="submit" class="button"> --}}
+            <button id="submit">Upload</button>
         </form>
         <div class="progress fadeOut">
             <div class="progress__bar animation"></div>
