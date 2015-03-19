@@ -7,19 +7,36 @@ var server = lr();
 var minifyCSS = require('gulp-minify-css');
 var embedlr = require('gulp-embedlr');
 var concat = require('gulp-concat');
+var autoprefixer = require('gulp-autoprefixer');
+var jshint = require('gulp-jshint');
 
+// TODO: lint server code
 
-gulp.task('scripts', function() {
+gulp.task('vendor', function() {
     gulp.src([
         'public/js/lib/jquery-2.1.3.min.js',
         'public/js/lib/underscore-min.js',
         'public/js/lib/backbone-min.js',
-        'public/js/lib/*.js',
+        'public/js/lib/*.js'
+    ])
+        .pipe(concat('lib.js'))
+        .pipe(gulp.dest('public/build/js'))
+        .pipe(refresh(server));
+
+    // copy maps
+    gulp.src(['public/js/lib/*.map'])
+        .pipe(gulp.dest('public/build/js/'));
+});
+
+gulp.task('js', function() {
+    gulp.src([
         'public/js/models/*.js',
         'public/js/views/*.js',
         'public/js/collections/*.js',
         'public/js/*.js',
     ])
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
         .pipe(concat('app.js'))
         .pipe(gulp.dest('public/build/js'))
         .pipe(refresh(server));
@@ -30,6 +47,7 @@ gulp.task('sass', function() {
         .pipe(watch('./public/sass/*.scss'))
         .pipe(sass())
         // .pipe(gulp.dest('./public/css'))
+        .pipe(autoprefixer('last 2 versions', 'ie 9'))
         .pipe(minifyCSS())
         .pipe(gulp.dest('./public/build/css'))
         .pipe(refresh(server));
@@ -50,14 +68,14 @@ gulp.task('html', function() {
 });
 
 gulp.task('default', function() {
-    gulp.run('lr-server', 'sass', 'scripts', 'html');
+    gulp.run('lr-server', 'sass', 'vendor', 'js', 'html');
 
     gulp.watch('public/sass/**/*.scss', function(e) {
         gulp.run('sass');
     });
 
     gulp.watch('public/js/**/*.js', function(e) {
-        gulp.run('scripts');
+        gulp.run('js');
     });
 
     gulp.watch('views/**/*.handlebars', function(e) {

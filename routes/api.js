@@ -9,6 +9,27 @@ var path = require('path');
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
 
+function createThumbnail(filepath, filename) {
+    'use strict';
+    lwip.open(filepath + filename, function(err, image) {
+        if(err) {
+            console.error(err);
+        } else {
+            image.batch()
+                .scale(0.5)
+                .crop(200, 200)
+                .writeFile(path.join(__dirname, '../public/uploads/thumbs/') + filename, function(err) {
+                    if(err) {
+                        console.error(err);
+                    } else {
+                        console.log('successfully created thumbnail');
+                    }
+                });
+        }
+    });
+}
+
+
 /* under /api */
 router
     .get('/', function(req, res) {
@@ -25,50 +46,7 @@ router
             }
         });
     })
-    // json/base64 form
-    // .post('/photos', function(req, res) {
-    //     'use strict';
 
-    //     console.log('posted form');
-
-    //     var data_url = req.body.fileData;
-    //     //strip out all of the meta data otherwise write fails
-    //     var matches = data_url.match(/^data:.+\/(.+);base64,(.*)$/);
-    //     var base64_data = matches[2];
-
-    //     var buffer = new Buffer(base64_data, 'base64');
-    //     var date = new Date();
-    //     var filename = date.getTime() + '-' + req.body.fileName;
-    //     var newLocation = 'public/uploads/';
-
-    //     fs.writeFile(newLocation + filename, buffer, function(err) {
-    //         console.log('writing file');
-    //         if(err) {
-    //             console.error(err);
-    //         } else {
-    //             console.log('success');
-
-    //             // create thumbnail
-    //             createThumbnail(newLocation, filename);
-    //         }
-    //     });
-
-    //     var photo = new Photo({
-    //         path: '/uploads/' + filename,
-    //         caption: req.body.caption,
-    //         takenBy: req.body.takenBy,
-    //         thumbnail: '/uploads/thumbs/' + filename,
-    //         date: date
-    //     });
-
-    //     return photo.save(function(err) {
-    //         if(err) {
-    //             console.error(err);
-    //         } else {
-    //             return res.send(photo);
-    //         }
-    //     });
-    // })
     .post('/photos', function(req, res) {
         'use strict';
 
@@ -175,50 +153,5 @@ router
         });
     });
 
-function createThumbnail(filepath, filename) {
-    'use strict';
-    lwip.open(filepath + filename, function(err, image) {
-        if(err) {
-            console.error(err);
-        } else {
-            image.batch()
-                .scale(0.5)
-                .crop(200, 200)
-                .writeFile(path.join(__dirname, '../public/uploads/thumbs/') + filename, function(err) {
-                    if(err) {
-                        console.error(err);
-                    } else {
-                        console.log('successfully created thumbnail');
-                    }
-                });
-        }
-    });
-}
-
-// function copyFile(source, target, callback) {
-//     'use strict';
-//     var called = false;
-
-//     var read = fs.createReadStream(source);
-//     read.on('error', function(err) {
-//         done(err);
-//     });
-
-//     var write = fs.createWriteStream(target);
-//     write.on('error', function(err) {
-//         done(err);
-//     });
-//     write.on('close', function(ex) {
-//         done();
-//     });
-//     read.pipe(write);
-
-//     function done(err) {
-//         if(!called) {
-//             callback(err);
-//             called = true;
-//         }
-//     }
-// }
 
 module.exports = router;

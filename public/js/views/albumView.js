@@ -1,3 +1,4 @@
+/* global Backbone */
 var app = app || {};
 
 app.AlbumView = Backbone.View.extend({

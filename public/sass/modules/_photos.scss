@@ -1,3 +1,60 @@
-#photos {
-    border: 1px solid black;
+.progress {
+    border: 1px solid #09C;
+    padding: 1px; 
+    position:relative;
+    width:400px;
+    border-radius: 3px;
+    margin: 10px;
+    text-align:left;
+}
+.progress__bar {
+    height: 20px;
+    border-radius: 3px;
+    background-color: #033;
+    width: 1%;
+}
+.progress__status {
+    top: 3px;
+    left: 50%;
+    position: absolute;
+    display: inline-block;
+    color: #000;
+}
+
+.rule {
+    width: 100%;
+    margin: 2em auto;
+    height: 4px;
+}
+
+.animation {
+    background-color: rgb(232, 125, 62);
+    animation: change_colour 10s linear 0s infinite alternate;
+}
+
+@keyframes change_colour {
+    0% {
+        /* orange */
+        background-color: rgb(232, 125, 62);
+    }
+    20% {
+        /* yellow */
+        background-color: rgb(229, 181, 103);
+    }
+    40% {
+        /* green */
+        background-color: rgb(180, 210, 115);
+    }
+    60% {
+        /* blue */
+        background-color: rgb(108, 153, 187);
+    }
+    80% {
+        /* purple */
+        background-color: rgb(158, 134, 200);
+    }
+    100% {
+        /* pink */
+        background-color: rgb(176, 82, 121);
+    }
 }

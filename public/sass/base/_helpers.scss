@@ -31,3 +31,13 @@
 .clearfix {
     *zoom: 1;
 }
+
+
+.hidden {
+    display: none;
+}
+
+.fadeOut {
+    transition: opacity 0.5s;
+    opacity: 0;
+}

@@ -1,13 +1,22 @@
-# humanstxt.org/
-# The humans responsible & technology colophon
-
 # TEAM
 
-    James Tease -- Frontend dev -- @whostolemyhat
+    James Tease @whostolemyhat
+    Site: https://www.jamestease.co.uk
+    Location: Bristol
 
 
+# TECHNOLOGY
 
-# TECHNOLOGY COLOPHON
+Frontend:
+    HTML5, CSS3, Sass
+    Build tools: Gulp, NPM
+    JS: Backbone, jQuery, Underscore
 
-    HTML5, CSS3
-    Normalize.css, jQuery, Modernizr
+Backend:
+    Express
+    Node
+    MongoDB
+    Handlebars
+
+    Hosted on Webfaction
+    Source on Github https://github.com/whostolemyhat/weddingphotos

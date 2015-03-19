@@ -15,3 +15,16 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 4. Ensure /public/uploads/ and /public/uploads/thumbs/ folders exist
 5. Create appropriate placeholder images in /public/images/ and /public/images/thumbs/
 6. Run `nodemon`
+
+##TODO
+
+- show photo on change
+- improve upload script
+- render models when upload finishes
+- lazyload img
+- use thumbs
+- link to main img
+- login
+- use username on img
+- multi-img upload
+- socket.io - emit event when photo is saved
