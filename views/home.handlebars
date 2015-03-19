@@ -35,11 +35,13 @@
 
 <script id="photoTemplate" type="text/template">
     <figure class="image">
-        <img src="<%= path %>" class="image--photo" />
+        <a href="<%= path %>" title="<%= caption %>" class="image__link">
+        <img src="<%= thumbnail %>" class="image__photo" />
+        </a>
         
-        <figcaption class="image--caption"><%= caption %></figcaption>
+        <figcaption class="image__caption"><%= caption %></figcaption>
     </figure>
-    <aside class="image--meta">Taken by <%= takenBy %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
+    <aside class="image__meta">Taken by <%= takenBy %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
     <button class="update">Update</button>
     <button class="delete">Delete</button>
 </script>

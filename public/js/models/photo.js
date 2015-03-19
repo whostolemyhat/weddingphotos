@@ -4,7 +4,7 @@ var app = app || {};
 app.Photo = Backbone.Model.extend({
     defaults: {
         path: 'img/placeholder.png',
-        thumb: 'img/thumbs/placeholder.png',
+        thumbnail: 'img/thumbs/placeholder.png',
         caption: '',
         date: new Date(),
         takenBy: ''
