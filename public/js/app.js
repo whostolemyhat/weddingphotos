@@ -7,6 +7,5 @@ $(function() {
     //     { photo: 'uploads/Penguins.jpg', caption: 'Penguins', takenBy: 'Tim', date: 1426150779463 },
     //     { caption: 'Penguins', takenBy: 'Bob', date: 1426150729463 }
     // ];
-
     new app.AlbumView();
 });

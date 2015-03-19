@@ -22,7 +22,71 @@
     display:inline-block;
     color: #000000;
     }
+    .animation {
+        width: 100%;
+        margin: 2em auto;
+        height: 4px;
+        background-color: rgb(232, 125, 62);
+        -webkit-animation: change_colour 10s linear 0s infinite alternate;
+        animation: change_colour 10s linear 0s infinite alternate;
+    }
+
+    @-webkit-keyframes change_colour {
+        0% {
+            /* orange */
+            background-color: rgb(232, 125, 62);
+        }
+        20% {
+            /* yellow */
+            background-color: rgb(229, 181, 103);
+        }
+        40% {
+            /* green */
+            background-color: rgb(180, 210, 115);
+        }
+        60% {
+            /* blue */
+            background-color: rgb(108, 153, 187);
+        }
+        80% {
+            /* purple */
+            background-color: rgb(158, 134, 200);
+        }
+        100% {
+            /* pink */
+            background-color: rgb(176, 82, 121);
+        }
+    }
+    @keyframes change_colour {
+        0% {
+            /* orange */
+            background-color: rgb(232, 125, 62);
+        }
+        20% {
+            /* yellow */
+            background-color: rgb(229, 181, 103);
+        }
+        40% {
+            /* green */
+            background-color: rgb(180, 210, 115);
+        }
+        60% {
+            /* blue */
+            background-color: rgb(108, 153, 187);
+        }
+        80% {
+            /* purple */
+            background-color: rgb(158, 134, 200);
+        }
+        100% {
+            /* pink */
+            background-color: rgb(176, 82, 121);
+        }
+    }
 </style>
+
+<div class="animation"></div>
+
 <div id="upload-wrapper">
     <span>Allowed: jpg, jpeg png, gif</span>
     <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload">

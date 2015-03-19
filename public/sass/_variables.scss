@@ -1,0 +1,28 @@
+/* Colours */
+
+$colourPrimary: pink;
+$colourSecondary: orange;
+
+/* Typography  */
+
+$baseFontSize: 16; // No px on this
+$baseLineHeight: 25px; 
+$baseFontFamily: Arial, Helvetica, sans-serif;
+$baseFontColour: #222;
+
+$headingFontFamily: Arial, Helvetica, sans-serif; 
+$headingColour: #222;
+
+$headingAlpha:                  32px;
+$headingBeta:                   24px;
+$headingGamma:                  19px;
+$headingDelta:                  16px;
+$headingEpsilon:                13px;
+$headingZeta:                   11px;
+
+/* Links  */
+$linkColour: #00e;
+$linkVisited: lighten($linkColour, 10);
+$linkHover: darken($linkColour, 20);
+$linkActive: darken($linkColour, 20);
+$linkFocus: darken($linkColour, 40);

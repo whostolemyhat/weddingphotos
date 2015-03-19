@@ -25,6 +25,7 @@ app.PhotoView = Backbone.View.extend({
 
     updatePhoto: function() {
         // create form
+        // do somehting
         // populate with current data
     }
 });
