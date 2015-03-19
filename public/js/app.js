@@ -2,5 +2,5 @@
 var app = app || {};
 
 $(function() {
-    new app.AlbumView();
+    app.album = new app.AlbumView();
 });
