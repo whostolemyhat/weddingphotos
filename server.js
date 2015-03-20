@@ -1,5 +1,4 @@
 var express = require('express');
-var socket = require('socket.io');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -11,12 +10,6 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 
 var app = express();
-var io = socket();
-app.io = io;
-
-io.on( "connection", function(socket) {
-    console.log( "A user connected" );
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

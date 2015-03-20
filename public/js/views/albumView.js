@@ -121,9 +121,12 @@ app.AlbumView = Backbone.View.extend({
     },
 
     afterSuccess: function(responseText, statusText, xhr, el) {
-        console.log(responseText);
         $('.upload__output').html('Finished uploading!');
+        responseText.thumbnail = '/img/thumbs/placeholder.png';
         var photo = new app.Photo(responseText);
+        // set loading img while thumbnail is generated
+        // photo.thumbnail = '/img/thumbs/placeholder.png';
+        console.log(photo);
         app.album.renderPhotoTop(photo);
     }
 

@@ -18,7 +18,7 @@
 <script id="photoTemplate" type="text/template">
     <figure class="image">
         <a href="<%= path %>" title="<%= caption %>" class="image__link">
-            <img src="img/thumbs/placeholder.png" data-src="<%= thumbnail %>" class="image__photo" />
+            <img src="<%= thumbnail %>" class="image__photo" id="<%= _id %>" />
         </a>
         
         <figcaption class="image__caption"><%= caption %></figcaption>
@@ -42,14 +42,20 @@
 
 <script src="build/js/lib.js"></script>
 <script>
-io = io.connect()
+io = io.connect();
 
 // Send the ready event.
-io.emit('ready')
+io.emit('ready');
 
 // Listen for the new visitor event.
 io.on('new visitor', function() {
     $('body').append('<p>New visitor, hooray! ' + new Date().toString() +'</p>')
-})
+});
+
+io.on('photo', function(data) {
+    console.log(data);
+    console.log($('#' + data._id));
+    $('#' + data._id).attr('src', data.thumbnail);
+});
 </script>
 <script src="build/js/app.js"></script>
