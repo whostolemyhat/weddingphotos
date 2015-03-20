@@ -24,7 +24,8 @@ function createThumbnail(filepath, filename, callback) {
                         // callback(err);
                     } else {
                         console.log('successfully created thumbnail');
-                        // callback();
+                        // emit event
+                        console.log('uploads/thumbs/' + filename);
                     }
                 });
         }
@@ -96,7 +97,6 @@ router
             var filename = date.getTime() + '-' + this.openedFiles[0].name;
             var newLocation = path.join(__dirname, '../public/uploads/');
 
-
             fs.copy(tempPath, newLocation + filename, function(err) {
                 if(err) {
                     console.log(err);
@@ -106,6 +106,7 @@ router
                 // create thumbnail
                 createThumbnail(newLocation, filename);
             });
+
             var photo = new Photo({
                 path: '/uploads/' + filename,
                 caption: fields.caption,
