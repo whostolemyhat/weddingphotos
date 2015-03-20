@@ -13,18 +13,11 @@ app.PhotoView = Backbone.View.extend({
     },
 
     events: {
-        'click .delete': 'deletePhoto',
-        'click .update': 'updatePhoto'
+        'click .delete': 'deletePhoto'
     },
 
     deletePhoto: function() {
         this.model.destroy();
         this.remove();
-    },
-
-    updatePhoto: function() {
-        // create form
-        // do somehting
-        // populate with current data
     }
 });

@@ -3,40 +3,32 @@ var app = app || {};
 
 app.AlbumView = Backbone.View.extend({
     el: '#photos',
-    files: '',
 
     initialize: function() {
         'use strict';
         this.collection = new app.Album();
         this.collection.fetch({ reset: true }); // get photos from api
-        this.listenTo(this.collection, 'add', this.renderPhoto);
+        // this.listenTo(this.collection, 'add', this.renderPhoto);
         this.listenTo(this.collection, 'reset', this.render);
 
-        // jQuery wom't work
-        // var fileInput = document.getElementById('photo');
-        // var form = document.getElementById('addPhoto');
-        // fileInput.addEventListener('change', this.prepareUpload);
-
-        // fileInput.addEventListener('change', function(e) {
-        //     var reader = new FileReader();
-
-        //     for(var i = 0; i < fileInput.files.length; i++) {
-        //         var file = fileInput.files[i];
-        //         form.appendChild('<input type="hidden" id="fileData' + i + '">');
-        //         form.appendChild('<input type="hidden" id="fileName' + i + '">');
-
-        //         reader.onload = function(e) {
-        //             $('#fileData' + i).val(reader.result);
-        //             $('#fileName' + i).val(file.name);
-        //         };
-        //         reader.readAsDataURL(file);
-        //     }
-        // });
-
         this.render();
+
+        console.log('init called');
+        io = io.connect();
+        // Send the ready event.
+        io.emit('ready');
+
+        io.on('photo', function(data) {
+            console.log('received photo event');
+
+            var photo = new app.Photo(data);
+            app.album.renderPhotoTop(photo);
+            // app.album.collection.add(photo);
+        });
     },
 
     render: function() {
+        console.log('album render');
         this.collection.each(function(item) {
             this.renderPhoto(item);
         }, this);
@@ -45,6 +37,7 @@ app.AlbumView = Backbone.View.extend({
     // render a photo by creating a PhotoView and append
     // element it renders to the album's element
     renderPhoto: function(item) {
+        console.log('render photo');
         var photoView = new app.PhotoView({
             model: item
         });
@@ -52,6 +45,7 @@ app.AlbumView = Backbone.View.extend({
     },
 
     renderPhotoTop: function(item) {
+        console.log('render top');
         var photoView = new app.PhotoView({
             model: item
         });
@@ -62,16 +56,20 @@ app.AlbumView = Backbone.View.extend({
         'click #submit': 'addPhoto'
     },
 
-    addPhoto: function() {
+    addPhoto: function(e) {
         console.log('adding photo');
         var options = {
             target: '.upload__output',
             beforeSubmit: this.beforeSubmit,
             uploadProgress: this.onProgress,
             success: this.afterSuccess,
-            resetForm: true
+            resetForm: true,
+            clearForm: true
         };
-        $('#upload').submit(function() {
+
+        $('#upload').one('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             console.log('uploading');
             $(this).ajaxSubmit(options);
             return false;
@@ -122,69 +120,5 @@ app.AlbumView = Backbone.View.extend({
 
     afterSuccess: function(responseText, statusText, xhr, el) {
         $('.upload__output').html('Finished uploading!');
-        responseText.thumbnail = '/img/thumbs/placeholder.png';
-        var photo = new app.Photo(responseText);
-        // set loading img while thumbnail is generated
-        // photo.thumbnail = '/img/thumbs/placeholder.png';
-        console.log(photo);
-        app.album.renderPhotoTop(photo);
     }
-
-
-    // addPhoto: function(e) {
-    //     'use strict';
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     console.log(app.AlbumView.files);
-
-    //     // loading spinner
-
-    //     // var formData = {};
-    //     // $('#addPhoto div').children('input').each(function(i, el) {
-    //     //     if ($(el).val() !== '') {
-    //     //         formData[el.id] = $(el).val();
-    //     //     }
-    //     // });
-
-    //     // console.log(formData);
-
-    //     // // this.collection.add(new app.Photo(formData));
-    //     // this.collection.create(formData);
-    //     var data = new FormData();
-    //     // $.each(app.AlbumView.files, function(key, value) {
-    //     var fileInput = document.getElementById('photo');
-    //     var files = fileInput.files;
-    //     for(var i = 0; i < files.length; i++) {
-    //         var file = files[i];
-    //         console.log(file.type);
-    //         if(!file.type.match('image.*')) {
-    //             continue;
-    //         }
-    //         data.append('photos[]', file, file.name);
-    //     }
-
-    //     $('#addPhoto div').children('input').each(function(i, el) {
-    //         if ($(el).val() !== '' && $(el).attr('id') !== 'photo') {
-    //             data.append(el.id, $(el).val());
-    //         }
-    //     });
-    //     console.log(data);
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open('POST', '/api/photos/', true);
-    //     xhr.onload = function() {
-    //         if(xhr.status === 200) {
-    //             // it worked
-    //             console.log('success');
-    //         } else {
-    //             console.error(xhr.status);
-    //         }
-    //     };
-    //     xhr.send(data);
-    //     // this.collection.create(data);
-    // }
-
-    // prepareUpload: function(e) {
-    //     'use strict';
-    //     app.AlbumView.files = e.target.files;
-    // }
 });
