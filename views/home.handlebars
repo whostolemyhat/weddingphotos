@@ -1,28 +1,10 @@
 <div class="rule animation"></div>
 <div id="photos">
-{{!--     <form action="#" id="addPhoto" enctype="multipart/form-data">
-        <div>
-            <label for="photo">Photo</label>
-            <input type="file" id="photo" name="photo" multiple="multiple">
-
-            <input type="hidden" name="fileData" id="fileData">
-            <input type="hidden" name="fileName" id="fileName">
-
-            <label for="caption">Caption</label>
-            <input type="text" id="caption" name="caption">
-
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date">
-
-            <button id="add">Upload</button>
-        </div>
-    </form> --}}
 
     <div class="upload__wrapper">
         <span>Allowed: jpg, jpeg png, gif</span>
         <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="upload--form">
             <input type="file" name="photo" id="photo">
-            {{!-- <input type="submit" value="Upload" id="submit" class="button"> --}}
             <button id="submit">Upload</button>
         </form>
         <div class="progress fadeOut">
@@ -36,7 +18,7 @@
 <script id="photoTemplate" type="text/template">
     <figure class="image">
         <a href="<%= path %>" title="<%= caption %>" class="image__link">
-            <img src="img/thumbs/placeholder.png" data-src="<%= src %>" class="image__photo" />
+            <img src="img/thumbs/placeholder.png" data-src="<%= thumbnail %>" class="image__photo" />
         </a>
         
         <figcaption class="image__caption"><%= caption %></figcaption>
@@ -59,8 +41,15 @@
 <script src="js/app.js"></script> --}}
 
 <script src="build/js/lib.js"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io();
+io = io.connect()
+
+// Send the ready event.
+io.emit('ready')
+
+// Listen for the new visitor event.
+io.on('new visitor', function() {
+    $('body').append('<p>New visitor, hooray! ' + new Date().toString() +'</p>')
+})
 </script>
 <script src="build/js/app.js"></script>

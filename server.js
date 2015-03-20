@@ -1,4 +1,5 @@
-var express = require('express.io');
+var express = require('express');
+var socket = require('socket.io');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -10,8 +11,12 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 
 var app = express();
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
+var io = socket();
+app.io = io;
+
+io.on( "connection", function(socket) {
+    console.log( "A user connected" );
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -69,9 +74,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
-// io.on('connection', function(socket) {
-//     console.log('User connected!');
-// });
 
 module.exports = app;

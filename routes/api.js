@@ -6,6 +6,8 @@ var fs = require('fs-extra');
 var lwip = require('lwip');
 var path = require('path');
 
+var app = express();
+
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
 
@@ -21,7 +23,6 @@ function createThumbnail(filepath, filename, callback) {
                 .writeFile(path.join(__dirname, '../public/uploads/thumbs/') + filename, function(err) {
                     if(err) {
                         console.error(err);
-                        // callback(err);
                     } else {
                         console.log('successfully created thumbnail');
                         // emit event
@@ -59,6 +60,7 @@ router
     .get('/', function(req, res) {
         'use strict';
         res.render('upload');
+        app.io.broadcase('new visitor');
     })
     .get('/photos', function(req, res) {
         'use strict';
