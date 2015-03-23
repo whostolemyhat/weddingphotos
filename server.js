@@ -4,6 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var flash = require('connect-flash');
+var passport = require('passport');
 
 var routes = require('./controllers/index');
 var users = require('./controllers/users');
@@ -32,6 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
+
+app.use(session({ secret: 'areallyreallySecretSecretpassword12435$%£^Y£' }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 app.use('/', routes);
 app.use('/users', users);

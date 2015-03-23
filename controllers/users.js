@@ -17,6 +17,12 @@ router
             username: req.body.username,
             password: req.body.password
         });
+        user.save(function(err) {
+            if(err) {
+                res.send(err);
+            }
+            res.json(user);
+        });
     });
 
 module.exports = router;
