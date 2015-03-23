@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var Photo = require('../schemas/photo');
+var Photo = require('../models/photo');
 var formidable = require('formidable');
 var fs = require('fs-extra');
 var lwip = require('lwip');
 var path = require('path');
-var io = require('../io');
+var io = require('../controllers/io');
 
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
