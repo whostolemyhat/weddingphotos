@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
+
 /* GET users listing. */
 router
     .get('/', function(req, res, next) {
@@ -13,10 +14,11 @@ router
         });
     })
     .post('/', function(req, res) {
-        var user = new User({
-            username: req.body.username,
-            password: req.body.password
-        });
+        console.log(req.body);
+        var user = new User();
+        user.username = req.body.username;
+        user.password = user.generateHash(req.body.password);
+
         user.save(function(err) {
             if(err) {
                 res.send(err);

@@ -6,6 +6,7 @@ var fs = require('fs-extra');
 var lwip = require('lwip');
 var path = require('path');
 var io = require('../controllers/io');
+var authController = require('../controllers/auth');
 
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
@@ -35,11 +36,11 @@ function createThumbnail(filepath, filename, photo) {
 
 /* under /api */
 router
-    .get('/', function(req, res) {
+    .get('/',  function(req, res) {
         'use strict';
         res.render('upload');
     })
-    .get('/photos', function(req, res) {
+    .get('/photos', authController.isAuthenticated, function(req, res) {
         'use strict';
         return Photo.find().sort({ date: -1 }).exec(function(err, photos) {
             if(err) {
