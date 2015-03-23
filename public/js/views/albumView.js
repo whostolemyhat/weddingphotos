@@ -41,7 +41,7 @@ app.AlbumView = Backbone.View.extend({
         var photoView = new app.PhotoView({
             model: item
         });
-        this.$el.append(photoView.render().el);
+        this.$el.find('.photo__container').append(photoView.render().el);
     },
 
     renderPhotoTop: function(item) {
@@ -49,7 +49,7 @@ app.AlbumView = Backbone.View.extend({
         var photoView = new app.PhotoView({
             model: item
         });
-        photoView.render().$el.insertAfter(this.$el.find('.upload__wrapper'));
+        photoView.render().$el.prependTo(this.$el.find('.photo__container')).addClass('highlight');
     },
 
     events: {
