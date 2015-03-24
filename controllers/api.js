@@ -6,7 +6,8 @@ var fs = require('fs-extra');
 var lwip = require('lwip');
 var path = require('path');
 var io = require('../controllers/io');
-var authController = require('../controllers/auth');
+var passport = require('passport');
+var authController = require('../controllers/auth')(passport);
 
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
@@ -33,6 +34,14 @@ function createThumbnail(filepath, filename, photo) {
     });
 }
 
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+
+    res.redirect('/', req.flash('loginMessage', 'Please log in'));
+}
+
 
 /* under /api */
 router
@@ -51,7 +60,7 @@ router
         });
     })
 
-    .post('/photos', authController.isAuthenticated, function(req, res) {
+    .post('/photos', isLoggedIn, function(req, res) {
         'use strict';
 
         console.log('posted form');
@@ -80,7 +89,10 @@ router
             var photo = new Photo({
                 path: '/uploads/' + filename,
                 caption: fields.caption,
-                takenBy: req.user.username,
+                takenBy: {
+                    id: req.user._id,
+                    username: req.user.local.username
+                },
                 thumbnail: '/uploads/thumbs/' + filename,
                 // thumbnail: 'img/thumbs/placeholder.png',
                 date: date
@@ -109,6 +121,7 @@ router
         form.parse(req);
     })
     .get('/photos/:id', function(req, res) {
+        // get one photo
         'use strict';
         return Photo.findById(req.params.id, function(err, photo) {
             if(err) {
@@ -119,9 +132,8 @@ router
             }
         });
     })
-    .put('/photos/:id', authController.isAuthenticated, function(req, res) {
+    .put('/photos/:id', function(req, res) {
         'use strict';
-
         // TODO: what needs to be updatable?
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
@@ -143,7 +155,7 @@ router
             });
         });
     })
-    .delete('/photos/:id', authController.isAuthenticated, function(req, res) {
+    .delete('/photos/:id', function(req, res) {
         'use strict';
         return Photo.findById(req.params.id, function(err, photo) {
             return photo.remove(function(err) {

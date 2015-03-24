@@ -1,25 +1,117 @@
-var passport = require('passport');
+// var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 var User = require('../models/user');
+var LocalStrategy = require('passport-local').Strategy;
 
-passport.use(new BasicStrategy(
-    function(username, password, callback) {
-        User.findOne({ username: username }, function(err, user) {
-            if(err) {
-                console.log('error');
-                return callback(err);
-            }
+// exports.isAuthenticated = passport.authenticate('basic', { session: false });
 
-            if(!user) {
-                return callback(null, false);
-            }
+module.exports = function(passport) {
+    // -=-=-=-=-=-=-=-=-=-=-=-
+    // basic
+    // -=-=-=-=-=-=-=-=-=-=-=-
+    passport.use(new BasicStrategy(
+        function(username, password, callback) {
+            User.findOne({ username: username }, function(err, user) {
+                if(err) {
+                    console.log('error');
+                    return callback(err);
+                }
 
-            if(!user.validPassword(password)) {
-                return callback(null, false);
-            }
-            return callback(null, user);
+                if(!user) {
+                    return callback(null, false);
+                }
+
+                if(!user.validPassword(password)) {
+                    return callback(null, false);
+                }
+                return callback(null, user);
+            });
+        }
+    ));
+
+    // required for persistent login sessions
+    passport.serializeUser(function(user, done) {
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        User.findById(id, function(err, user) {
+            done(err, user);
         });
-    }
-));
+    });
 
-exports.isAuthenticated = passport.authenticate('basic', { session: false });
+    // =-=-=-=-=-=-=-=-=-=-=-=
+    // local signup
+    // =-=-=-=-=-=-=-=-=-=-=-=
+    passport.use('local-signup', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true
+    }, function(req, username, password, done) {
+        process.nextTick(function() {
+            User.findOne({ 'local.username' : username }, function(err, user) {
+                if(err) {
+                    return done(err);
+                }
+
+                if(user) {
+                    return done(null, false, req.flash('signupMessage', 'That username is already taken'));
+                }
+
+                // if logged in, link a new local account
+                if(req.user) {
+                    var user = req.user;
+                    user.local.password = user.generateHash(password);
+                    user.local.username = username;
+                    user.save(function(err) {
+                        if(err) {
+                            throw err;
+                        }
+                        return done(null, user);
+                    });
+                } else {
+                    var newUser = new User();
+                    newUser.local.username = username;
+                    newUser.local.password = newUser.generateHash(password);
+                    user.save(function(err) {
+                        if(err) {
+                            throw err;
+                        }
+                        return done(null, newUser);
+                    });
+                }
+            }); // end user.findone
+        });
+    })); // end passport.use('local-signup')
+
+
+    // =-=-=-=-=-=-=-=-=-=-=-=
+    // Local login
+    // =-=-=-=-=-=-=-=-=-=-=-=
+    passport.use('local-login', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true
+    }, function(req, username, password, done) {
+        console.log(username, password, done);
+
+        process.nextTick(function() {
+            User.findOne({ 'local.username': username }, function(err, user) {
+                if(err) {
+                    return done(err);
+                }
+
+                if(!user) {
+                    return done(null, false, req.flash('loginMessage', 'No user found'));
+                }
+
+                if(!user.validPassword(password)) {
+                    return done(null, false, req.flash('loginMessage', 'Wrong password'));
+                }
+
+                return done(null, user);
+            });
+        });
+    }));
+
+}; // end module.export

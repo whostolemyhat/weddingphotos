@@ -4,11 +4,8 @@ var bcrypt = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
     local: {
         username: String,
-        email: String,
         password: String
-    },
-    username: String,
-    password: String
+    }
 });
 
 userSchema.methods.generateHash = function(password) {
@@ -16,9 +13,9 @@ userSchema.methods.generateHash = function(password) {
 };
 
 userSchema.methods.validPassword = function(password) {
-    console.log(password, this.password);
+    console.log('valid password called');
     // return bcrypt.compareSync(password, this.local.password);
-    return bcrypt.compareSync(password, this.password);
+    return bcrypt.compareSync(password, this.local.password);
 };
 
 module.exports = mongoose.model('User', userSchema);

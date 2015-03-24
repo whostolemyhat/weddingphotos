@@ -25,7 +25,7 @@
         
         <figcaption class="image__caption"><%= caption %></figcaption>
     </figure>
-    <aside class="image__meta">Taken by <%= takenBy %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
+    <aside class="image__meta">Taken by <%= takenBy.username %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
     <button class="delete">Delete</button>
 </script>
 

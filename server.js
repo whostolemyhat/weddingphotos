@@ -46,7 +46,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.use('/', routes);
+// app.use('/', routes);
+require('./controllers/index')(app, passport);
 app.use('/users', users);
 app.use('/api', api);
 

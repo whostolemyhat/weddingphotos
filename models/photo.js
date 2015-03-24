@@ -12,7 +12,10 @@ var photoSchema = new mongoose.Schema({
     path: String,
     thumbnail: String,
     date: Date,
-    takenBy: String,
+    takenBy: {
+        id: String,
+        username: String
+    },
     caption: String
 });
 

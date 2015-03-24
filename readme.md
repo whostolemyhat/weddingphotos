@@ -38,3 +38,4 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
     - [ ] the twitters
 - [ ] multi-img upload
 - [ ] loads of styling
+- [ ] preview img about to be uploaded
