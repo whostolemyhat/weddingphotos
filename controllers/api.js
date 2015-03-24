@@ -160,10 +160,9 @@ router
         // photo.takenBy.id is a string
         var userId = String(req.user._id);
         return Photo.findById(req.params.id, function(err, photo) {
-            
             console.log(userId, photo.takenBy.id);
 
-            if(photo.takenBy.id === userId) {
+            if(photo.takenBy.id === userId || req.user.isAdmin) {
                 return photo.remove(function(err) {
                     if(err) {
                         console.error(err);
@@ -172,6 +171,7 @@ router
                     }
                 });
             } else {
+                res.status(403);
                 return res.send('Error: photo does not belong to user');
             }
         });

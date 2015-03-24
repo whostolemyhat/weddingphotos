@@ -1,18 +1,16 @@
 {{#if user }}
     Logged in as {{ user.local.username }}
     <a href="/logout">Log out</a>
-{{else }}
+{{ else }}
     <a href="/login">Login</a>
     <a href="/signup">Sign up</a>
 {{/if}}
 
-Admin: {{user.isAdmin}}
-
 <div id="photos">
-
-    <div class="upload__wrapper">
+<div class="upload__wrapper">
+    {{#if user}}
         <span>Allowed: jpg, jpeg png, gif</span>
-        <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="upload--form">
+        <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="upload__form">
             <input type="file" name="photo" id="photo">
             <input type="submit" value="Upload" id="submit">
         </form>
@@ -21,8 +19,20 @@ Admin: {{user.isAdmin}}
             <div class="progress__status">0%</div>
         </div>
         <div class="upload__output"></div>
-    </div>
+    {{ else }}
 
+    {{ message }}
+    <form action="/" method="post">
+        <label for="username">username</label>
+        <input type="username" name="username" id="username">
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+
+        <input type="submit" value="Login">
+    </form>
+    {{/if}}
+</div>
     <div class="rule animation"></div>
     <div class="photo__container"></div>
 </div>
