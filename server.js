@@ -36,7 +36,12 @@ var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
 
-app.use(session({ secret: 'areallyreallySecretSecretpassword12435$%£^Y£' }));
+var sessionConfig = require('./config/session');
+app.use(session({
+    secret: sessionConfig.secret,
+    resave: false,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

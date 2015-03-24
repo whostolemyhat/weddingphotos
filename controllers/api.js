@@ -40,7 +40,7 @@ router
         'use strict';
         res.render('upload');
     })
-    .get('/photos', authController.isAuthenticated, function(req, res) {
+    .get('/photos', function(req, res) {
         'use strict';
         return Photo.find().sort({ date: -1 }).exec(function(err, photos) {
             if(err) {
@@ -51,7 +51,7 @@ router
         });
     })
 
-    .post('/photos', function(req, res) {
+    .post('/photos', authController.isAuthenticated, function(req, res) {
         'use strict';
 
         console.log('posted form');
@@ -80,7 +80,7 @@ router
             var photo = new Photo({
                 path: '/uploads/' + filename,
                 caption: fields.caption,
-                takenBy: fields.takenBy,
+                takenBy: req.user.username,
                 thumbnail: '/uploads/thumbs/' + filename,
                 // thumbnail: 'img/thumbs/placeholder.png',
                 date: date
@@ -119,7 +119,7 @@ router
             }
         });
     })
-    .put('/photos/:id', function(req, res) {
+    .put('/photos/:id', authController.isAuthenticated, function(req, res) {
         'use strict';
 
         // TODO: what needs to be updatable?
@@ -143,7 +143,7 @@ router
             });
         });
     })
-    .delete('/photos/:id', function(req, res) {
+    .delete('/photos/:id', authController.isAuthenticated, function(req, res) {
         'use strict';
         return Photo.findById(req.params.id, function(err, photo) {
             return photo.remove(function(err) {
