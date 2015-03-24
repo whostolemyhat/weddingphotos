@@ -63,6 +63,7 @@ module.exports = function(passport) {
                     var user = req.user;
                     user.local.password = user.generateHash(password);
                     user.local.username = username;
+                    user.isAdmin = false;
                     user.save(function(err) {
                         if(err) {
                             throw err;
@@ -73,6 +74,7 @@ module.exports = function(passport) {
                     var newUser = new User();
                     newUser.local.username = username;
                     newUser.local.password = newUser.generateHash(password);
+                    newUser.isAdmin = false;
                     newUser.save(function(err) {
                         if(err) {
                             throw err;
