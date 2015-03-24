@@ -8,9 +8,14 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 
 1. Clone repo
 2. `npm install`
+3. Make sure MongoDB is installed and running
 3. Create /config/database.js:
     module.exports = {
-        'url': 'mongodb://path/to/your/mongodb'
+        url: 'mongodb://path/to/your/mongodb'
+    };
+4. Create /config/session.js:
+    module.exports = {
+        secret: 'yoursecretsessionkeyhere'
     };
 4. Ensure /public/uploads/ and /public/uploads/thumbs/ folders exist
 5. Create appropriate placeholder images in /public/images/ and /public/images/thumbs/
@@ -18,14 +23,18 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 
 ##TODO
 
-- show photo on change
-- improve upload script
-- render models when upload finishes
-- lazyload img
-- use thumbs
-- link to main img
-- login
-- use username on img
-- multi-img upload
-- socket.io - emit event when photo is saved
-- set up mongo on webfaction
+- [x] sockets/emit
+- [x] show photo on change
+- [x] link to large img
+- [x] username on img
+- [x] set up mongo on webfaction
+- [x] render model on upload
+- [x] thumbs
+- [] improve upload script
+- [] lazyload img
+- [] login/signup
+    - [] google
+    - [] facebook
+    - [] the twitters
+- [] multi-img upload
+- [] loads of styling
