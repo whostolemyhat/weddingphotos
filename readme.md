@@ -30,11 +30,11 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 - [x] set up mongo on webfaction
 - [x] render model on upload
 - [x] thumbs
-- [] improve upload script
-- [] lazyload img
-- [] login/signup
-    - [] google
-    - [] facebook
-    - [] the twitters
-- [] multi-img upload
-- [] loads of styling
+- [ ] improve upload script
+- [ ] lazyload img
+- [ ] login/signup
+    - [ ] google
+    - [ ] facebook
+    - [ ] the twitters
+- [ ] multi-img upload
+- [ ] loads of styling
