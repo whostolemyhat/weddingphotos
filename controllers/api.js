@@ -155,16 +155,25 @@ router
             });
         });
     })
-    .delete('/photos/:id', function(req, res) {
+    .delete('/photos/:id', isLoggedIn, function(req, res) {
         'use strict';
+        // photo.takenBy.id is a string
+        var userId = String(req.user._id);
         return Photo.findById(req.params.id, function(err, photo) {
-            return photo.remove(function(err) {
-                if(err) {
-                    console.error(err);
-                } else {
-                    return res.send('');
-                }
-            });
+            
+            console.log(userId, photo.takenBy.id);
+
+            if(photo.takenBy.id === userId) {
+                return photo.remove(function(err) {
+                    if(err) {
+                        console.error(err);
+                    } else {
+                        return res.send('');
+                    }
+                });
+            } else {
+                return res.send('Error: photo does not belong to user');
+            }
         });
     });
 

@@ -9,25 +9,25 @@ module.exports = function(passport) {
     // -=-=-=-=-=-=-=-=-=-=-=-
     // basic
     // -=-=-=-=-=-=-=-=-=-=-=-
-    passport.use(new BasicStrategy(
-        function(username, password, callback) {
-            User.findOne({ username: username }, function(err, user) {
-                if(err) {
-                    console.log('error');
-                    return callback(err);
-                }
+    // passport.use(new BasicStrategy(
+    //     function(username, password, callback) {
+    //         User.findOne({ username: username }, function(err, user) {
+    //             if(err) {
+    //                 console.log('error');
+    //                 return callback(err);
+    //             }
 
-                if(!user) {
-                    return callback(null, false);
-                }
+    //             if(!user) {
+    //                 return callback(null, false);
+    //             }
 
-                if(!user.validPassword(password)) {
-                    return callback(null, false);
-                }
-                return callback(null, user);
-            });
-        }
-    ));
+    //             if(!user.validPassword(password)) {
+    //                 return callback(null, false);
+    //             }
+    //             return callback(null, user);
+    //         });
+    //     }
+    // ));
 
     // required for persistent login sessions
     passport.serializeUser(function(user, done) {
@@ -73,7 +73,7 @@ module.exports = function(passport) {
                     var newUser = new User();
                     newUser.local.username = username;
                     newUser.local.password = newUser.generateHash(password);
-                    user.save(function(err) {
+                    newUser.save(function(err) {
                         if(err) {
                             throw err;
                         }

@@ -23,7 +23,6 @@ app.AlbumView = Backbone.View.extend({
 
             var photo = new app.Photo(data);
             app.album.renderPhotoTop(photo);
-            // app.album.collection.add(photo);
         });
     },
 

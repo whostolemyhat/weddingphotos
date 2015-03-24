@@ -1,3 +1,11 @@
+{{#if user }}
+    Logged in as {{ user.local.username }}
+    <a href="/logout">Log out</a>
+{{else }}
+    <a href="/login">Login</a>
+    <a href="/signup">Sign up</a>
+{{/if}}
+
 <div id="photos">
 
     <div class="upload__wrapper">
@@ -26,7 +34,11 @@
         <figcaption class="image__caption"><%= caption %></figcaption>
     </figure>
     <aside class="image__meta">Taken by <%= takenBy.username %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
+    {{#if user}}
+    <% if(takenBy.id === '{{user.id}}') { %>
     <button class="delete">Delete</button>
+    <% } %>
+    {{/if}}
 </script>
 
 
