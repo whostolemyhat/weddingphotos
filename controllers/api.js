@@ -163,10 +163,25 @@ router
             console.log(userId, photo.takenBy.id);
 
             if(photo.takenBy.id === userId || req.user.isAdmin) {
+                var img = photo.path;
+                var thumbnail = photo.thumbnail;
+                var prefix = path.join(__dirname, '../public/');
+
                 return photo.remove(function(err) {
                     if(err) {
                         console.error(err);
                     } else {
+                        // find file
+                        fs.remove(path.join(prefix, img), function(err) {
+                            if(err) {
+                                console.error(err);
+                            }
+                        });
+                        fs.remove(path.join(prefix, thumbnail), function(err) {
+                            if(err) {
+                                console.error(err);
+                            }
+                        });
                         return res.send('');
                     }
                 });

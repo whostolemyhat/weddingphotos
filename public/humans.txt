@@ -9,14 +9,16 @@
 
 Frontend:
     HTML5, CSS3, Sass
-    Build tools: Gulp, NPM
     JS: Backbone, jQuery, Underscore
+    Build tools: Gulp
 
 Backend:
     Express
     Node
     MongoDB
     Handlebars
+    Passport
+    Sockets.io
 
     Hosted on Webfaction
     Source on Github https://github.com/whostolemyhat/weddingphotos
