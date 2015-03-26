@@ -3,9 +3,17 @@ var router = express.Router();
 var User = require('../models/user');
 
 
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+
+    res.redirect('/', req.flash('loginMessage', 'Please log in'));
+}
+
 /* under /users */
 router
-    .get('/', function(req, res, next) {
+    .get('/', isLoggedIn, function(req, res, next) {
         User.find(function(err, users) {
             if(err) {
                 res.send(err);
@@ -13,7 +21,7 @@ router
             res.json(users);
         });
     })
-    .post('/', function(req, res) {
+    .post('/', isLoggedIn, function(req, res) {
         console.log(req.body);
         var user = new User();
         user.username = req.body.username;
