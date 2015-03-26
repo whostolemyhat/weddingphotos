@@ -33,7 +33,9 @@ h6 {
 
 h1, 
 .alpha {
-    @include px('font-size', $headingAlpha); 
+    @include px('font-size', $headingAlpha);
+    margin-top: 0;
+    line-height: 1.1em;
 }
 
 h2, 

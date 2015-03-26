@@ -1,0 +1,16 @@
+.header {
+    background: url('/img/giant-flowers.png') center center no-repeat transparent;
+    padding-top: 100px;
+    height: 380px;
+    text-align: center;
+}
+
+.overlay {
+    background-color: rgba($yellow, 0.4);
+    z-index: 900;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

@@ -1,0 +1,75 @@
+.form {
+    width: 100%;
+
+    &__wrapper {
+        border-radius: 2px;
+        margin: auto;
+        padding: 1rem;
+        background: #ffe;
+
+        @media (min-width: $large) {
+            max-width: 50%;
+        }
+    }
+
+    &--signup,
+    &--login {
+        margin: auto;
+        position: absolute;
+        top: -1500px;
+        transition: top 0.4s ease-in-out;
+        z-index: 1000;
+
+        &.form--show {
+            top: 0;
+            
+            @media (min-width: $large) {
+                top: 250px;
+            }
+        }
+    }
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    border: 1px solid #eef;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+
+}
+
+input[type="submit"] {
+    display: block;
+}
+
+
+.progress {
+    border: 1px solid #09C;
+    padding: 1px; 
+    position: relative;
+    width: 400px;
+    border-radius: 3px;
+    margin: 10px auto;
+    text-align: left;
+
+    &__bar {
+        height: 20px;
+        border-radius: 3px;
+        background-color: #033;
+        width: 1%;
+    }
+    &__status {
+        top: 3px;
+        left: 50%;
+        position: absolute;
+        display: inline-block;
+        color: #000;
+    }
+}

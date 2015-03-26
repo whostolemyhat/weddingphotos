@@ -3,6 +3,14 @@
 $colourPrimary: pink;
 $colourSecondary: orange;
 
+$yellow: #fffee0;
+$grey: #6e7578;
+$green: #7adbc3;
+$darkgreen: #779e77;
+$brown: #e3bd86;
+$darkbrown: #a68e72;
+$orange: #f78e43;
+
 /* Typography  */
 
 $baseFontSize: 16; // No px on this
@@ -21,8 +29,12 @@ $headingEpsilon:                13px;
 $headingZeta:                   11px;
 
 /* Links  */
-$linkColour: #00e;
-$linkVisited: lighten($linkColour, 10);
+$linkColour: $green;
+$linkVisited: $linkColour;
 $linkHover: darken($linkColour, 20);
 $linkActive: darken($linkColour, 20);
 $linkFocus: darken($linkColour, 40);
+
+$small: 460px;
+$medium: 600px;
+$large: 960px;

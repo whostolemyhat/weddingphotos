@@ -1,41 +1,70 @@
-{{#if user }}
-    Logged in as {{ user.local.username }}
-    <a href="/logout">Log out</a>
-{{ else }}
-    <a href="/login">Login</a>
-    <a href="/signup">Sign up</a>
-{{/if}}
+<header class="header">
+    <h1 class="alpha">James<br> and Greta's<br> Wedding Photos</h1>
+
+    <div class="intro">
+    {{#if user }}
+        Logged in as {{ user.local.username }}
+        <a href="/logout">Log out</a>
+    {{ else }}
+        <p>To upload a photo, please <br>
+            <a href="/" title="log in" class="form__trigger" data-target="form--login">log in</a> or 
+            <a href="/" title="Create an account" class="form__trigger" data-target="form--signup">choose a username</a>.
+        </p>
+
+        {{ message }}
+        <form action="/" method="post" class="form form--login">
+            <div class="form__wrapper">
+                <a href="#" class="form--close">Close</a>
+                <label for="username">username</label>
+                <input type="text" name="username" id="username">
+
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+
+                <input type="submit" value="Login">
+            </div>
+        </form>
+        
+        {{ signupMessage }}
+        <form action="/signup" method="post" class="form form--signup">
+            <div class="form__wrapper">
+                <a href="#" class="form--close">Close</a>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username">
+
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password">
+
+                <input type="submit" value="Sign up">
+            </div>
+        </form>
+    {{/if}}
+    </div>
+</header>
+
+<div class="rule animation"></div>
 
 <div id="photos">
-<div class="upload__wrapper">
-    {{#if user}}
-        <span>Allowed: jpg, jpeg png, gif</span>
-        <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="upload__form">
-            <input type="file" name="photo" id="photo">
-            <input type="submit" value="Upload" id="submit">
-        </form>
-        <div class="progress fadeOut">
-            <div class="progress__bar animation"></div>
-            <div class="progress__status">0%</div>
-        </div>
-        <div class="upload__output"></div>
-    {{ else }}
+    <div class="upload__wrapper">
+        {{#if user}}
+            <span>Allowed: jpg, jpeg png, gif</span>
+            <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="form form--upload">
+                <input type="file" name="photo" id="photo">
+                <input type="submit" value="Upload" id="submit">
+            </form>
+            <div class="progress fadeOut">
+                <div class="progress__bar animation"></div>
+                <div class="progress__status">0%</div>
+            </div>
+            <div class="upload__output"></div>
+        {{/if}}
 
-    {{ message }}
-    <form action="/" method="post">
-        <label for="username">username</label>
-        <input type="username" name="username" id="username">
-
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-
-        <input type="submit" value="Login">
-    </form>
-    {{/if}}
-</div>
-    <div class="rule animation"></div>
+    </div>
+    
     <div class="photo__container"></div>
 </div>
+
+<div class="overlay hidden"></div>
 
 <script id="photoTemplate" type="text/template">
     <figure class="image">

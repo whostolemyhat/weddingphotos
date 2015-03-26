@@ -103,8 +103,8 @@ app.AlbumView = Backbone.View.extend({
                 return false;
             }
 
-            if(size > 1048576) {
-                $('.upload__output').html(size + ' is too big!');
+            if(size > 3048576) {
+                $('.upload__output').html('Photo is too big!');
                 return false;
             }
 
