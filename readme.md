@@ -20,6 +20,7 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 4. Ensure /public/uploads/ and /public/uploads/thumbs/ folders exist
 5. Create appropriate placeholder images in /public/images/ and /public/images/thumbs/
 6. Run `nodemon`
+6. Create admin user - sign up as usual; open mongo shell and add isAdmin:true to the user
 
 ##TODO
 
