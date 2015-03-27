@@ -24,6 +24,9 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 
 ##TODO
 
+- [ ] lazyload img
+- [ ] load 25 img; infinite scroll
+- [ ] view photos by user
 - [x] sockets/emit
 - [x] show photo on change
 - [x] link to large img
@@ -32,11 +35,10 @@ Runs on Node, Express, Mongo and Backbone (MEBN?).
 - [x] render model on upload
 - [x] thumbs
 - [ ] improve upload script
-- [ ] lazyload img
-- [ ] login/signup
+- [x] login/signup
     - [ ] google
     - [ ] facebook
     - [ ] the twitters
 - [ ] multi-img upload
-- [ ] loads of styling
+- [x] loads of styling
 - [ ] preview img about to be uploaded
