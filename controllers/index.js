@@ -4,8 +4,7 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
         res.render('home', {
             user: req.user,
-            message: req.flash('loginMessage'),
-            signupMessage: req.flash('signupMessage')
+            message: req.flash('loginMessage')
         });
     });
     app.post('/', passport.authenticate('local-login', {

@@ -1,0 +1,25 @@
+$alteredGreen: darken($green, 10%);
+$borderWidth: 3px;
+
+.button {
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    color: $yellow;
+    background: $green;
+    border-radius: 4px;
+    border-top: $borderWidth solid $green;
+    border-left: $borderWidth solid $green;
+    border-bottom: $borderWidth solid $alteredGreen;
+    border-right: $borderWidth solid $alteredGreen;
+
+    &:hover {
+        background: $alteredGreen;
+        border-top: $borderWidth solid darken($alteredGreen, 5%);
+        border-left: $borderWidth solid darken($alteredGreen, 5%);
+    }
+
+    &:active,
+    &:focus {
+        background: lighten($green, 10%);
+    }
+}

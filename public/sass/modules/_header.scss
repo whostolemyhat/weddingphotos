@@ -14,3 +14,16 @@
     right: 0;
     bottom: 0;
 }
+.message {
+    width: 100%;
+    text-align: center;
+    background: darken($yellow, 10%);
+    border: 1px solid darken($yellow, 40%);
+    border-radius: 4px;
+    padding: 1rem 0;
+    margin: 1rem auto 0;
+
+    @media (min-width: $large) {
+        max-width: 50%;
+    }
+}

@@ -2,14 +2,28 @@
     width: 100%;
 
     &__wrapper {
-        border-radius: 2px;
+        border: 1px solid $green;
+        border-radius: 4px;
+        box-shadow: 0 0 5px $yellow;
         margin: auto;
         padding: 1rem;
         background: #ffe;
+        position: relative;
 
         @media (min-width: $large) {
             max-width: 50%;
         }
+
+        .button {
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
+
+    &__row {
+        width: 100%;
+        max-width: 300px;
+        margin: auto;
     }
 
     &--signup,
@@ -28,21 +42,57 @@
             }
         }
     }
+
+    &--close {
+        position: absolute;
+        top: 0.8em;
+        right: 1em;
+    }
+
+    &--half {
+        width: 50%;
+
+        @media (min-width: $large) {
+            float: left;
+        }
+    }
+    
+    &--upload {
+        @extend .clearfix;
+    }
+    
+    &--file-upload {
+        margin-top: 8px;
+    }
+}
+
+.upload__wrapper {
+    @extend .clearfix;
+
+    @media (min-width: $large) {
+        max-width: 30%;
+    }
+
+    .button {
+        margin-top: 0;
+    }
 }
 
 label {
     display: block;
     font-weight: bold;
+    margin-top: 1em;
+    margin-bottom:  0.5em;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    border: 1px solid #eef;
+    border: 1px solid darken($yellow, 50%);
     padding: 0.5rem;
     width: 100%;
     max-width: 300px;
-
+    border-radius: 4px;
 }
 
 input[type="submit"] {
@@ -50,26 +100,3 @@ input[type="submit"] {
 }
 
 
-.progress {
-    border: 1px solid #09C;
-    padding: 1px; 
-    position: relative;
-    width: 400px;
-    border-radius: 3px;
-    margin: 10px auto;
-    text-align: left;
-
-    &__bar {
-        height: 20px;
-        border-radius: 3px;
-        background-color: #033;
-        width: 1%;
-    }
-    &__status {
-        top: 3px;
-        left: 50%;
-        position: absolute;
-        display: inline-block;
-        color: #000;
-    }
-}

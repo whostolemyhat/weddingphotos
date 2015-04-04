@@ -55,7 +55,8 @@ module.exports = function(passport) {
                 }
 
                 if(user) {
-                    return done(null, false, req.flash('signupMessage', 'That username is already taken'));
+                    console.log('username already taken');
+                    return done(null, false, req.flash('message', 'That username is already taken'));
                 }
 
                 // if logged in, link a new local account

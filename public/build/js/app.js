@@ -88,6 +88,7 @@ app.AlbumView = Backbone.View.extend({
             e.preventDefault();
             e.stopPropagation();
             console.log('uploading');
+            $('.progress').show();
             $(this).ajaxSubmit(options);
             return false;
         });
@@ -137,6 +138,11 @@ app.AlbumView = Backbone.View.extend({
 
     afterSuccess: function(responseText, statusText, xhr, el) {
         $('.upload__output').html('Finished uploading!');
+        $('.progress__bar').fadeOut('slow');
+        setTimeout(function() {
+            $('.progress').hide();
+            $('.progress__bar').show();
+        }, 1000);
     }
 });
 /*global Backbone, _, $ */
@@ -144,7 +150,7 @@ var app = app || {};
 
 app.PhotoView = Backbone.View.extend({
     tagName: 'div',
-    className: 'photoContainer',
+    className: 'photo',
     template: _.template($('#photoTemplate').html()),
 
     render: function() {

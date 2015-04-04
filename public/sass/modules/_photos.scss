@@ -15,8 +15,10 @@ body {
     margin: auto;
 }
 
-.photoContainer {
+.photo {
     overflow: hidden;
+    min-height: 425px;
+    position: relative;
 
     @media (min-width: $small) {
         margin: auto;
@@ -30,6 +32,21 @@ body {
 
     @media (min-width: $large) {
         width: 33.3333%;
+    }
+
+    .button {
+        position: absolute;
+        top: 3%;
+        right: 3%;
+        display: none;
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    &:hover {
+        .button {
+            display: block;
+        }
     }
 }
 

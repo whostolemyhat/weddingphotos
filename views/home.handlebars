@@ -3,7 +3,7 @@
 
     <div class="intro">
     {{#if user }}
-        Logged in as {{ user.local.username }}.
+        Logged in as {{ user.local.username }}.<br>
         <a href="/logout">Log out</a>
     {{ else }}
         <p>To upload a photo, please <br>
@@ -11,58 +11,71 @@
             <a href="/" title="Create an account" class="form__trigger" data-target="form--signup">choose a username</a>.
         </p>
 
-        {{ message }}
+        
         <form action="/" method="post" class="form form--login">
             <div class="form__wrapper">
                 <a href="#" class="form--close">Close</a>
-                <label for="username">username</label>
-                <input type="text" name="username" id="username">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Name">
 
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
-
-                <input type="submit" value="Login">
+                <input type="password" name="password" id="password" placeholder="Password">
+                
+                <div class="form__row">
+                    <input type="submit" class="button" value="Login">
+                </div>
             </div>
         </form>
         
-        {{ signupMessage }}
+        
         <form action="/signup" method="post" class="form form--signup">
             <div class="form__wrapper">
                 <a href="#" class="form--close">Close</a>
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username">
+                <input type="text" name="username" id="username" placeholder="Name">
 
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
-
-                <input type="submit" value="Sign up">
+                <input type="password" name="password" id="password" placeholder="Password">
+                
+                <div class="form__row">
+                    <input type="submit" class="button" value="Sign up">
+                </div>
             </div>
         </form>
     {{/if}}
     </div>
 </header>
 
+    {{ signupMessage }}    
+{{#if message}}
+<div class="message">
+    {{ message }}
+</div>
+{{/if}}
+
 <div class="rule animation"></div>
 
-<div id="photos">
-    <div class="upload__wrapper">
-        {{#if user}}
-            <span>Allowed: jpg, jpeg png, gif</span>
-            <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="form form--upload">
-                <input type="file" name="photo" id="photo">
-                <input type="submit" value="Upload" id="submit">
-            </form>
-            <div class="progress fadeOut">
-                <div class="progress__bar animation"></div>
-                <div class="progress__status">0%</div>
-            </div>
-            <div class="upload__output"></div>
-        {{/if}}
+<main role="main" id="main">
+   <div id="photos">
+       {{#if user}}
+       <div class="form__wrapper upload__wrapper">
+               <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="form form--upload">
+                    <div class="form--half form--file-upload"><input type="file" name="photo" id="photo"></div>
+                    <div class="form--half"><input type="submit" value="Upload" id="submit" class="button"></div>
+               </form>
+               <div class="progress fadeOut">
+                   <div class="progress__bar animation"></div>
+                   <div class="progress__status">0%</div>
+               </div>
+               <div class="upload__output"></div>
 
-    </div>
-    
-    <div class="photo__container"></div>
-</div>
+       </div>
+       {{/if}}
+       
+       <div class="photo__container"></div>
+   </div> 
+</main>
+
 
 <div class="overlay hidden"></div>
 
@@ -77,11 +90,11 @@
     <aside class="image__meta">Taken by <%= takenBy.username %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
     {{#if user}}
     <% if(takenBy.id === '{{user.id}}') { %>
-    <button class="delete">Delete</button>
+        <button class="button delete"><i class="fa fa-trash-o"></i></button>
     <% } %>
     {{/if}}
     {{#if user.isAdmin}}
-    <button class="delete">Admin delete</button>
+    <button class="button delete"><i class="fa fa-trash-o"></i></button>
     {{/if}}
 </script>
 
