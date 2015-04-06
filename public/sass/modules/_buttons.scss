@@ -1,4 +1,5 @@
 $alteredGreen: darken($green, 10%);
+$alteredOrange: darken($orange, 10%);
 $borderWidth: 3px;
 
 .button {
@@ -21,5 +22,19 @@ $borderWidth: 3px;
     &:active,
     &:focus {
         background: lighten($green, 10%);
+    }
+
+    &--admin {
+        background: $orange;
+        border-top: $borderWidth solid $orange;
+        border-left: $borderWidth solid $orange;
+        border-bottom: $borderWidth solid $alteredOrange;
+        border-right: $borderWidth solid $alteredOrange;
+
+        &:hover {
+            background: $alteredOrange;
+            border-top: $borderWidth solid darken($alteredOrange, 5%);
+            border-left: $borderWidth solid darken($alteredOrange, 5%);
+        }
     }
 }

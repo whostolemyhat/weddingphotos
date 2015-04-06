@@ -45,8 +45,7 @@
     {{/if}}
     </div>
 </header>
-
-    {{ signupMessage }}    
+  
 {{#if message}}
 <div class="message">
     {{ message }}
@@ -59,15 +58,16 @@
    <div id="photos">
        {{#if user}}
        <div class="form__wrapper upload__wrapper">
-               <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="form form--upload">
-                    <div class="form--half form--file-upload"><input type="file" name="photo" id="photo"></div>
-                    <div class="form--half"><input type="submit" value="Upload" id="submit" class="button"></div>
-               </form>
-               <div class="progress fadeOut">
-                   <div class="progress__bar animation"></div>
-                   <div class="progress__status">0%</div>
-               </div>
-               <div class="upload__output"></div>
+            <h3 class="beta">Upload a photo</h3>
+            <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="form form--upload">
+                <div class="form--half form--file-upload"><input type="file" name="photo" id="photo"></div>
+                <div class="form--half"><input type="submit" value="Upload" id="submit" class="button"></div>
+            </form>
+            <div class="progress fadeOut">
+               <div class="progress__bar animation"></div>
+               <div class="progress__status">0%</div>
+            </div>
+            <div class="upload__output"></div>
 
        </div>
        {{/if}}
@@ -75,7 +75,6 @@
        <div class="photo__container"></div>
    </div> 
 </main>
-
 
 <div class="overlay hidden"></div>
 
@@ -91,11 +90,13 @@
     {{#if user}}
     <% if(takenBy.id === '{{user.id}}') { %>
         <button class="button delete"><i class="fa fa-trash-o"></i></button>
+    {{#if user.isAdmin}}
+    <% } else if({{user.isAdmin}}) { %>
+            <button class="button delete button--admin"><i class="fa fa-trash-o"></i></button>
+        {{/if}}
     <% } %>
     {{/if}}
-    {{#if user.isAdmin}}
-    <button class="button delete"><i class="fa fa-trash-o"></i></button>
-    {{/if}}
+
 </script>
 
 

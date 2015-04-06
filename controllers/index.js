@@ -4,7 +4,7 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
         res.render('home', {
             user: req.user,
-            message: req.flash('loginMessage')
+            message: req.flash('message')
         });
     });
     app.post('/', passport.authenticate('local-login', {
@@ -24,7 +24,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/signup', function(req, res) {
-        res.render('signup', { message: req.flash('signupMessage') });
+        res.render('signup', { message: req.flash('message') });
     });
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/',

@@ -17,7 +17,7 @@ body {
 
 .photo {
     overflow: hidden;
-    min-height: 425px;
+    min-height: 375px;
     position: relative;
 
     @media (min-width: $small) {
@@ -36,7 +36,7 @@ body {
 
     .button {
         position: absolute;
-        top: 3%;
+        top: 3.5%;
         right: 3%;
         display: none;
         margin: 0;

@@ -8,7 +8,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
 
-    res.redirect('/', req.flash('loginMessage', 'Please log in'));
+    res.redirect('/', req.flash('message', 'Please log in'));
 }
 
 /* under /users */
