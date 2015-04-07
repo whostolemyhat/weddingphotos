@@ -1,3 +1,5 @@
+var User = require('../models/user');
+
 /* GET home page. */
 module.exports = function(app, passport) {
 
@@ -12,6 +14,10 @@ module.exports = function(app, passport) {
         failureRedirect: '/',
         failureFlash: true
     }));
+
+    app.get('/token', passport.authenticate('token', { session: false }), function(req, res) {
+        res.json(req.user);
+    });
 
     // app.get('/login', function(req, res) {
     //     res.render('login', { message: req.flash('loginMessage') });

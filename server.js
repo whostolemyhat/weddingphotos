@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
+var jwt = require('jwt-simple');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -43,6 +44,9 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+// api token
+app.set('jwtTokenSecret', sessionConfig.secret);
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

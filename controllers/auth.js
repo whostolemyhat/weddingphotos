@@ -1,9 +1,15 @@
 // var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
-var User = require('../models/user');
 var LocalStrategy = require('passport-local').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
+var User = require('../models/user');
+var Token = require('../models/token');
+
+var uid = require('uid');
 
 // exports.isAuthenticated = passport.authenticate('basic', { session: false });
+
+
 
 module.exports = function(passport) {
     // -=-=-=-=-=-=-=-=-=-=-=-
@@ -114,6 +120,56 @@ module.exports = function(passport) {
                 }
 
                 return done(null, user);
+            });
+        });
+    }));
+
+    passport.use('token', new BasicStrategy(
+        function(username, password, done) {
+            process.nextTick(function() {
+                User.findOne({ 'local.username': username }, function(err, user) {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    if(!user) {
+                        return done(null, false);
+                    }
+
+                    if(!user.validPassword(password)) {
+                        return done(null, false);
+                    }
+
+                    var token = new Token({
+                        value: uid(256),
+                        clientId: user._id
+                    });
+                    return done(null, token);
+                });
+            });
+        }
+    ));
+
+    passport.use(new BearerStrategy(function(accessToken, callback) {
+        Token.findOne({ value: accessToken }, function(err, token) {
+            if(err) {
+                return callback(err);
+            }
+
+            if(!token) {
+                return callback(null, false);
+            }
+
+            User.findOne({ _id: token.userId }, function(err, user) {
+                if(err) {
+                    return callback(err);
+                }
+
+                if(!user) {
+                    return callback(null, false);
+                }
+
+                callback(null, user, { scope: '*' });
             });
         });
     }));
