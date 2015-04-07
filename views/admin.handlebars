@@ -4,7 +4,7 @@
 <ul class="admin__users">
     {{#each users }}
     <li {{#if this.isAdmin}}class="admin__admin-user"{{/if}}>
-        <a href="/admin/user/{{this._id}}">{{this.local.username}}</a>
+        <a href="/admin/user/{{this._id}}">{{this.username}}</a>
     </li>
     {{/each}}
 </ul>

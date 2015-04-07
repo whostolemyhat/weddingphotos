@@ -7,33 +7,8 @@ var Token = require('../models/token');
 
 var uid = require('uid');
 
-// exports.isAuthenticated = passport.authenticate('basic', { session: false });
-
-
 
 module.exports = function(passport) {
-    // -=-=-=-=-=-=-=-=-=-=-=-
-    // basic
-    // -=-=-=-=-=-=-=-=-=-=-=-
-    // passport.use(new BasicStrategy(
-    //     function(username, password, callback) {
-    //         User.findOne({ username: username }, function(err, user) {
-    //             if(err) {
-    //                 console.log('error');
-    //                 return callback(err);
-    //             }
-
-    //             if(!user) {
-    //                 return callback(null, false);
-    //             }
-
-    //             if(!user.validPassword(password)) {
-    //                 return callback(null, false);
-    //             }
-    //             return callback(null, user);
-    //         });
-    //     }
-    // ));
 
     // required for persistent login sessions
     passport.serializeUser(function(user, done) {
@@ -56,7 +31,7 @@ module.exports = function(passport) {
     }, function(req, username, password, done) {
 
         process.nextTick(function() {
-            User.findOne({ 'local.username' : username }, function(err, user) {
+            User.findOne({ 'username' : username }, function(err, user) {
                 if(err) {
                     return done(err);
                 }
@@ -69,8 +44,8 @@ module.exports = function(passport) {
                 // if logged in, link a new local account
                 if(req.user) {
                     var user = req.user;
-                    user.local.password = user.generateHash(password);
-                    user.local.username = username;
+                    user.password = user.generateHash(password);
+                    user.username = username;
                     user.isAdmin = false;
                     user.save(function(err) {
                         if(err) {
@@ -80,8 +55,8 @@ module.exports = function(passport) {
                     });
                 } else {
                     var newUser = new User();
-                    newUser.local.username = username;
-                    newUser.local.password = newUser.generateHash(password);
+                    newUser.username = username;
+                    newUser.password = newUser.generateHash(password);
                     newUser.isAdmin = false;
                     newUser.save(function(err) {
                         if(err) {
@@ -106,7 +81,7 @@ module.exports = function(passport) {
         console.log(username, password, done);
 
         process.nextTick(function() {
-            User.findOne({ 'local.username': username }, function(err, user) {
+            User.findOne({ 'username': username }, function(err, user) {
                 if(err) {
                     return done(err);
                 }
@@ -127,7 +102,7 @@ module.exports = function(passport) {
     passport.use('token', new BasicStrategy(
         function(username, password, done) {
             process.nextTick(function() {
-                User.findOne({ 'local.username': username }, function(err, user) {
+                User.findOne({ 'username': username }, function(err, user) {
                     if (err) {
                         return done(err);
                     }

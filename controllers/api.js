@@ -91,7 +91,7 @@ router
                 caption: fields.caption,
                 takenBy: {
                     id: req.user._id,
-                    username: req.user.local.username
+                    username: req.user.username
                 },
                 thumbnail: '/uploads/thumbs/' + filename,
                 // thumbnail: 'img/thumbs/placeholder.png',
