@@ -52,6 +52,10 @@ app.use(passport.session());
 app.use(flash());
 
 // app.use('/', routes);
+app.get('/*', function(req, res, next) {
+    res.set('X-Clacks-Overhead', 'GNU Terry Pratchett');
+    next();
+});
 require('./controllers/index')(app, passport);
 app.use('/users', users);
 app.use('/api', api);
