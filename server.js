@@ -52,7 +52,7 @@ app.use(flash());
 
 // app.use('/', routes);
 app.get('/*', function(req, res, next) {
-    res.set('X-Clacks-Overhead', 'GNU Terry Pratchett');
+    res.set('X-Clacks-Overhead', 'GNU Terry Pratchett, GNU Iain Banks');
     next();
 });
 require('./controllers/index')(app, passport);
