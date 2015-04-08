@@ -5,10 +5,6 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 var User = require('../models/user');
 var Token = require('../models/token');
 
-var moment = require('moment');
-var jwt = require('jwt-simple');
-var secret = require('../config/session').secret;
-
 module.exports = function(passport) {
 
     // required for persistent login sessions
@@ -100,61 +96,61 @@ module.exports = function(passport) {
         });
     }));
 
-    // passport.use('token', new BasicStrategy(
-    //     function(username, password, done) {
+    passport.use('token', new BasicStrategy(
+        function(username, password, done) {
 
-    //         process.nextTick(function() {
-    //             User.findOne({ 'username': username }, function(err, user) {
-    //                 if (err) {
-    //                     return done(err);
-    //                 }
+            process.nextTick(function() {
+                User.findOne({ 'username': username }, function(err, user) {
+                    if (err) {
+                        return done(err);
+                    }
 
-    //                 if(!user) {
-    //                     return done(null, false);
-    //                 }
+                    if(!user) {
+                        return done(null, false);
+                    }
 
-    //                 if(!user.validPassword(password)) {
-    //                     return done(null, false);
-    //                 }
+                    if(!user.validPassword(password)) {
+                        return done(null, false);
+                    }
 
-    //                 var expires = moment().add(7, 'day').valueOf();
-    //                 var token = jwt.encode({
-    //                     iss: user._id,
-    //                     exp: expires
-    //                 }, secret);
+                    // var expires = moment().add(7, 'day').valueOf();
+                    // var token = jwt.encode({
+                    //     iss: user._id,
+                    //     exp: expires
+                    // }, secret);
 
-    //                 // var token = new Token({
-    //                 //     value: uid(256),
-    //                 //     clientId: user._id
-    //                 // });
-    //                 return done(null, token);
-    //             });
-    //         });
-    //     }
-    // ));
+                    // var token = new Token({
+                    //     value: uid(256),
+                    //     clientId: user._id
+                    // });
+                    return done(null, user);
+                });
+            });
+        }
+    ));
 
-    // passport.use(new BearerStrategy(function(accessToken, callback) {
-    //     Token.findOne({ value: accessToken }, function(err, token) {
-    //         if(err) {
-    //             return callback(err);
-    //         }
+    passport.use(new BearerStrategy(function(accessToken, callback) {
+        Token.findOne({ value: accessToken }, function(err, token) {
+            if(err) {
+                return callback(err);
+            }
 
-    //         if(!token) {
-    //             return callback(null, false);
-    //         }
+            if(!token) {
+                return callback(null, false);
+            }
 
-    //         User.findOne({ _id: token.userId }, function(err, user) {
-    //             if(err) {
-    //                 return callback(err);
-    //             }
+            User.findOne({ _id: token.userId }, function(err, user) {
+                if(err) {
+                    return callback(err);
+                }
 
-    //             if(!user) {
-    //                 return callback(null, false);
-    //             }
+                if(!user) {
+                    return callback(null, false);
+                }
 
-    //             callback(null, user, { scope: '*' });
-    //         });
-    //     });
-    // }));
+                callback(null, user, { scope: '*' });
+            });
+        });
+    }));
 
 }; // end module.export
