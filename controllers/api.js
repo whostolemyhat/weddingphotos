@@ -9,6 +9,9 @@ var io = require('../controllers/io');
 var passport = require('passport');
 var authController = require('../controllers/auth')(passport);
 
+var bodyParser = require('body-parser');
+var tokenAuth = require('./tokenauth');
+
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
 
@@ -80,7 +83,7 @@ router
         });
 
         form.on('end', function() {
-            // for(var i = 0; i < this.openedFiles.length; i++) {
+
             var tempPath = this.openedFiles[0].path;
             var date = new Date();
             var filename = date.getTime() + '-' + this.openedFiles[0].name;
@@ -94,7 +97,6 @@ router
                     username: req.user.username
                 },
                 thumbnail: '/uploads/thumbs/' + filename,
-                // thumbnail: 'img/thumbs/placeholder.png',
                 date: date
             });
 
@@ -120,6 +122,70 @@ router
 
         form.parse(req);
     })
+    
+    // copy - use for rpi
+    .post('/autophoto', [bodyParser(), tokenAuth], function(req, res) {
+        if(req.user) {
+            console.log('posted form');
+            var photos = [];
+
+            var form = new formidable.IncomingForm();
+            var files = [];
+            var fields = {};
+
+            form.on('field', function(field, value) {
+                fields[field] =  value;
+            });
+
+            form.on('file', function(field, file) {
+                console.log(file.name);
+                files.push([field, file]);
+            });
+
+            form.on('end', function() {
+
+                var tempPath = this.openedFiles[0].path;
+                var date = new Date();
+                var filename = date.getTime() + '-' + this.openedFiles[0].name;
+                var newLocation = path.join(__dirname, '../public/uploads/');
+
+                var photo = new Photo({
+                    path: '/uploads/' + filename,
+                    caption: fields.caption,
+                    takenBy: {
+                        id: req.user._id,
+                        username: req.user.username
+                    },
+                    thumbnail: '/uploads/thumbs/' + filename,
+                    date: date
+                });
+
+                fs.copy(tempPath, newLocation + filename, function(err) {
+                    if(err) {
+                        console.log(err);
+                        return console.error(err);
+                    }
+                    console.log('success');
+                    // create thumbnail
+                    createThumbnail(newLocation, filename, photo);
+                });
+
+
+                return photo.save(function(err) {
+                    if(err) {
+                        console.log(err);
+                        return console.error(err);
+                    }
+                    return res.send(photo);
+                });
+            });
+
+            form.parse(req);
+        } else {
+            res.end('No!');
+        }
+    })
+
     .get('/photos/:id', function(req, res) {
         // get one photo
         'use strict';
