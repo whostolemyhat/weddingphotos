@@ -13,6 +13,7 @@ userSchema.methods.generateHash = function(password) {
 };
 
 userSchema.methods.validPassword = function(password) {
+    console.log('comparing', password, this.password);
     return bcrypt.compareSync(password, this.password);
 };
 
