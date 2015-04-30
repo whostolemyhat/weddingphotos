@@ -17,13 +17,17 @@ var tokenAuth = require('./tokenauth');
 
 function createThumbnail(filepath, filename, photo) {
     'use strict';
+
+    console.log('creating thumbnail for ' + filename);
+    
     lwip.open(filepath + filename, function(err, image) {
         if(err) {
             console.error(err);
         } else {
             image.batch()
-                .scale(0.5)
-                .crop(450, 300)
+                .contain(400, 450)
+                // .scale(0.5)
+                // .crop(450, 300)
                 .writeFile(path.join(__dirname, '../public/uploads/thumbs/') + filename, function(err) {
                     if(err) {
                         console.error(err);
@@ -121,6 +125,58 @@ router
         });
 
         form.parse(req);
+    })
+
+    .get('/photos/refresh/:id', function(req, res) {
+    // redo thumbnail
+        // res.send(userId);
+        if(!req.user) {
+            res.status(403);
+            return res.send('Error: must be logged in');
+        }
+
+        return Photo.findById(req.params.id, function(err, photo) {
+            if(err) {
+                console.error(err);
+                return res.send(err);
+            }
+            if(!photo) {
+                console.error(err);
+                return res.send(err);
+            }
+            // console.log(userId, photo.takenBy.id);
+            var userId = String(req.user._id);
+
+            if(photo.takenBy.id === userId || req.user.isAdmin) {
+                // res.send('id:' + String(req.user._id));
+                // var img = photo.path;
+                var thumbnail = photo.thumbnail;
+                var prefix = path.join(__dirname, '../public/');
+
+                fs.remove(path.join(prefix, thumbnail), function(err) {
+                    if(err) {
+                        console.error(err);
+                    }
+                    var newLocation = path.join(__dirname, '../public/uploads/');
+                    console.log('deleted thumbnail for ' + photo.path);
+                    console.log(newLocation, photo.path.replace('/uploads/', ''), photo);
+                    createThumbnail(newLocation, photo.path.replace('/uploads/', ''), photo);
+                    res.send(photo.path);
+                });
+                //         return res.send('');
+                //     }
+                // });
+            } else {
+                res.status(403);
+                return res.send('Error: photo does not belong to user');
+            }
+        });
+        // delete existing thumb
+        // get exisitng photo
+        // create thumbnail
+        // createThumbnail(newLocation, filename, photo);
+
+        // return '/uploads/thumbs/' + filename;
     })
     
     // copy - use for rpi

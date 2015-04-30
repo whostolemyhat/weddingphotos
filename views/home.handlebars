@@ -90,6 +90,7 @@
     {{#if user}}
     <% if(takenBy.id === '{{user.id}}') { %>
         <button class="button delete"><i class="fa fa-trash-o"></i></button>
+        <button class="button refresh"><i class="fa fa-refresh"></i></button>
     {{#if user.isAdmin}}
     <% } else if({{user.isAdmin}}) { %>
             <button class="button delete button--admin"><i class="fa fa-trash-o"></i></button>

@@ -13,11 +13,19 @@ app.PhotoView = Backbone.View.extend({
     },
 
     events: {
-        'click .delete': 'deletePhoto'
+        'click .delete': 'deletePhoto',
+        'click .refresh': 'refreshThumb' 
     },
 
     deletePhoto: function() {
         this.model.destroy();
         this.remove();
+    },
+
+    refreshThumb: function(e) {
+        e.preventDefault();
+
+        // update thumbnail
+        $.get('/api/photos/refresh/' + this.model.id);
     }
 });

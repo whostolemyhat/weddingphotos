@@ -26,26 +26,22 @@ app.AlbumView = Backbone.View.extend({
         'use strict';
         this.collection = new app.Album();
         this.collection.fetch({ reset: true }); // get photos from api
-        // this.listenTo(this.collection, 'add', this.renderPhoto);
         this.listenTo(this.collection, 'reset', this.render);
 
         this.render();
 
-        console.log('init called');
         io = io.connect();
         // Send the ready event.
         io.emit('ready');
 
         io.on('photo', function(data) {
-            console.log('received photo event');
-
+            data.id = data._id;
             var photo = new app.Photo(data);
             app.album.renderPhotoTop(photo);
         });
     },
 
     render: function() {
-        console.log('album render');
         this.collection.each(function(item) {
             this.renderPhoto(item);
         }, this);
@@ -54,7 +50,6 @@ app.AlbumView = Backbone.View.extend({
     // render a photo by creating a PhotoView and append
     // element it renders to the album's element
     renderPhoto: function(item) {
-        console.log('render photo');
         var photoView = new app.PhotoView({
             model: item
         });
@@ -62,7 +57,6 @@ app.AlbumView = Backbone.View.extend({
     },
 
     renderPhotoTop: function(item) {
-        console.log('render top');
         var photoView = new app.PhotoView({
             model: item
         });
@@ -74,7 +68,6 @@ app.AlbumView = Backbone.View.extend({
     },
 
     addPhoto: function(e) {
-        console.log('adding photo');
         var options = {
             target: '.upload__output',
             beforeSubmit: this.beforeSubmit,
@@ -87,7 +80,6 @@ app.AlbumView = Backbone.View.extend({
         $('#upload').one('submit', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('uploading');
             $('.progress').show();
             $(this).ajaxSubmit(options);
             return false;
@@ -160,12 +152,20 @@ app.PhotoView = Backbone.View.extend({
     },
 
     events: {
-        'click .delete': 'deletePhoto'
+        'click .delete': 'deletePhoto',
+        'click .refresh': 'refreshThumb' 
     },
 
     deletePhoto: function() {
         this.model.destroy();
         this.remove();
+    },
+
+    refreshThumb: function(e) {
+        e.preventDefault();
+
+        // update thumbnail
+        $.get('/api/photos/refresh/' + this.model.id);
     }
 });
 /* global Backbone */
