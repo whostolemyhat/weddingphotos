@@ -6,7 +6,12 @@ app.PhotoView = Backbone.View.extend({
     className: 'photo',
     template: _.template($('#photoTemplate').html()),
 
+    initialize: function() {
+        this.model.on('change', this.render, this);
+    },
+
     render: function() {
+        console.log('rendering photo');
         this.$el.html(this.template(this.model.attributes));
 
         return this;
@@ -14,7 +19,7 @@ app.PhotoView = Backbone.View.extend({
 
     events: {
         'click .delete': 'deletePhoto',
-        'click .refresh': 'refreshThumb' 
+        'click .refresh': 'refreshThumb'
     },
 
     deletePhoto: function() {

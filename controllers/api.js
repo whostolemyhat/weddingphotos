@@ -25,7 +25,7 @@ function createThumbnail(filepath, filename, photo) {
             console.error(err);
         } else {
             image.batch()
-                .contain(400, 450)
+                .contain(400, 450, 'blue')
                 // .scale(0.5)
                 // .crop(450, 300)
                 .writeFile(path.join(__dirname, '../public/uploads/thumbs/') + filename, function(err) {

@@ -17,6 +17,7 @@ app.AlbumView = Backbone.View.extend({
         io.emit('ready');
 
         io.on('photo', function(data) {
+            console.log('received photo', data);
             data.id = data._id;
             var photo = new app.Photo(data);
             app.album.renderPhotoTop(photo);
@@ -37,13 +38,27 @@ app.AlbumView = Backbone.View.extend({
         });
         this.$el.find('.photo__container').append(photoView.render().el);
     },
-
+    
     renderPhotoTop: function(item) {
-        var photoView = new app.PhotoView({
-            model: item
-        });
-        photoView.render().$el.prependTo(this.$el.find('.photo__container')).addClass('highlight');
+        console.log(this.collection);
+        var photoView = this.collection.findWhere({ id: item.id });
+
+        if(photoView) {
+            console.log('exists');
+            // update existing item
+            // console.log(this.collection.findWhere({ id: item.id }));
+            // rerender
+            this.collection.reset();
+        } else {
+            console.log('create new');
+            // create new photo
+            photoView = new app.PhotoView({
+                model: item
+            });
+            photoView.render().$el.prependTo(this.$el.find('.photo__container')).addClass('highlight');
+        }
     },
+
 
     events: {
         'click #submit': 'addPhoto'
