@@ -45,6 +45,8 @@ app.AlbumView = Backbone.View.extend({
         this.collection.each(function(item) {
             this.renderPhoto(item);
         }, this);
+
+        $('.lazy').lazyload();
     },
 
     // render a photo by creating a PhotoView and append
@@ -63,14 +65,16 @@ app.AlbumView = Backbone.View.extend({
             // find existing photo
             var photo = $('[data-id=' + photoView.id + ']').find('img');
             photo.attr('src', photo.attr('src') + '?t=' + new Date().getTime());
-            // rerender
-            // this.collection.reset();
         } else {
             // create new photo
             photoView = new app.PhotoView({
                 model: item
             });
-            photoView.render().$el.prependTo(this.$el.find('.photo__container')).addClass('highlight');
+            var el = photoView.render().$el;
+            el.prependTo(this.$el.find('.photo__container')).addClass('highlight');
+            el.find('.image__photo').attr('src', el.find('.image__photo').data('original'));
+
+            this.collection.add(item);
         }
     },
 

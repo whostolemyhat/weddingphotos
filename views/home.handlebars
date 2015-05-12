@@ -81,7 +81,7 @@
 <script id="photoTemplate" type="text/template">
     <figure class="image" data-id="<%= id %>">
         <a href="<%= path %>" title="<%= caption %>" class="image__link" data-lightbox="wedding">
-            <img src="<%= thumbnail %>" class="image__photo" id="<%= _id %>" />
+            <img data-original="<%= thumbnail %>" class="image__photo lazy" id="<%= _id %>" />
         </a>
         
         <figcaption class="image__caption"><%= caption %></figcaption>
@@ -89,12 +89,12 @@
     <aside class="image__meta">Taken by <%= takenBy.username %> on <%= $.format.date(new Date(date), 'D MMMM yyyy') %></aside>
     {{#if user}}
     <% if(takenBy.id === '{{user.id}}') { %>
-        <button class="button delete"><i class="fa fa-trash-o"></i></button>
-        <button class="button refresh"><i class="fa fa-refresh"></i></button>
+        <button class="button delete" title="Delete this photo"><i class="fa fa-trash-o"></i></button>
+        <button class="button refresh" title="Refresh thumbnail"><i class="fa fa-refresh"></i></button>
     {{#if user.isAdmin}}
     <% } else if({{user.isAdmin}}) { %>
-        <button class="button delete button--admin"><i class="fa fa-trash-o"></i></button>
-        <button class="button refresh button--admin"><i class="fa fa-refresh"></i></button>
+        <button class="button delete button--admin" title="Delete this photo"><i class="fa fa-trash-o"></i></button>
+        <button class="button refresh button--admin" title="Refresh thumbnail"><i class="fa fa-refresh"></i></button>
         {{/if}}
     <% } %>
     {{/if}}
