@@ -52,6 +52,12 @@ gulp.task('sass', function() {
         .pipe(minifyCSS())
         .pipe(gulp.dest('./public/build/css'))
         .pipe(refresh(server));
+    
+    gulp.src('./public/sass/**/*.css')
+        .pipe(watch('./public/sass/*.css'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest('./public/build/css'))
+        .pipe(refresh(server));
 });
 
 gulp.task('lr-server', function() {

@@ -17,7 +17,6 @@ app.AlbumView = Backbone.View.extend({
         io.emit('ready');
 
         io.on('photo', function(data) {
-            console.log('received photo', data);
             data.id = data._id;
             var photo = new app.Photo(data);
             app.album.renderPhotoTop(photo);
@@ -40,17 +39,15 @@ app.AlbumView = Backbone.View.extend({
     },
     
     renderPhotoTop: function(item) {
-        console.log(this.collection);
         var photoView = this.collection.findWhere({ id: item.id });
 
         if(photoView) {
-            console.log('exists');
-            // update existing item
-            // console.log(this.collection.findWhere({ id: item.id }));
+            // find existing photo
+            var photo = $('[data-id=' + photoView.id + ']').find('img');
+            photo.attr('src', photo.attr('src') + '?t=' + new Date().getTime());
             // rerender
-            this.collection.reset();
+            // this.collection.reset();
         } else {
-            console.log('create new');
             // create new photo
             photoView = new app.PhotoView({
                 model: item

@@ -79,8 +79,8 @@
 <div class="overlay hidden"></div>
 
 <script id="photoTemplate" type="text/template">
-    <figure class="image">
-        <a href="<%= path %>" title="<%= caption %>" class="image__link">
+    <figure class="image" data-id="<%= id %>">
+        <a href="<%= path %>" title="<%= caption %>" class="image__link" data-lightbox="wedding">
             <img src="<%= thumbnail %>" class="image__photo" id="<%= _id %>" />
         </a>
         
@@ -93,7 +93,8 @@
         <button class="button refresh"><i class="fa fa-refresh"></i></button>
     {{#if user.isAdmin}}
     <% } else if({{user.isAdmin}}) { %>
-            <button class="button delete button--admin"><i class="fa fa-trash-o"></i></button>
+        <button class="button delete button--admin"><i class="fa fa-trash-o"></i></button>
+        <button class="button refresh button--admin"><i class="fa fa-refresh"></i></button>
         {{/if}}
     <% } %>
     {{/if}}
