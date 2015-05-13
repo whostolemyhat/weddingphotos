@@ -24,6 +24,8 @@ app.AlbumView = Backbone.View.extend({
     },
 
     render: function() {
+        $('.loading').hide();
+
         this.collection.each(function(item) {
             this.renderPhoto(item);
         }, this);
@@ -112,7 +114,7 @@ app.AlbumView = Backbone.View.extend({
                 return false;
             }
 
-            if(size > 3048576) {
+            if(size > 8048576) {
                 $('.upload__output').html('Photo is too big!');
                 return false;
             }

@@ -42,6 +42,8 @@ app.AlbumView = Backbone.View.extend({
     },
 
     render: function() {
+        $('.loading').hide();
+
         this.collection.each(function(item) {
             this.renderPhoto(item);
         }, this);
