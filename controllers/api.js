@@ -111,7 +111,7 @@ router
                         console.log(err);
                         return console.error(err);
                     }
-                    console.log('success');
+                    console.log('success copying ' + filename);
                     // create thumbnail
                     createThumbnail(newLocation, filename, photo);
                 });
@@ -121,6 +121,7 @@ router
                         console.log(err);
                         return console.error(err);
                     }
+                    console.log('saved ' + filename);
                     // res.send(photo);
                     photos.push(photo);
                 });
