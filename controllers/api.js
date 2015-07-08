@@ -88,6 +88,7 @@ router
         });
 
         form.on('end', function() {
+            var photos = [];
             for(var i = 0; i < files.length; i++) {
                 var tempPath = this.openedFiles[i].path;
                 var date = new Date();
@@ -120,10 +121,11 @@ router
                         console.log(err);
                         return console.error(err);
                     }
-                    res.send(photo);
+                    // res.send(photo);
+                    photos.push(photo);
                 });
 
-                return res.send(photo);
+                return res.send(photos);
             }
         });
 
