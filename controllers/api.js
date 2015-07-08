@@ -83,50 +83,55 @@ router
         });
 
         form.on('file', function(field, file) {
+            // TODO: move all processing here for multiple uploads
             console.log(file.name);
             files.push([field, file]);
+
+            // var tempPath = this.openedFiles[i].path;
+            var tempPath = file.path;
+            var date = new Date();
+            // var filename = date.getTime() + '-' + this.openedFiles[i].name;
+            var filename = date.getTime() + '-' + file.name;
+            var newLocation = path.join(__dirname, '../public/uploads/');
+
+            var photo = new Photo({
+                path: '/uploads/' + filename,
+                caption: fields.caption,
+                takenBy: {
+                    id: req.user._id,
+                    username: req.user.username
+                },
+                thumbnail: '/uploads/thumbs/' + filename,
+                date: date
+            });
+
+            fs.copy(tempPath, newLocation + filename, function(err) {
+                if(err) {
+                    console.log(err);
+                    return console.error(err);
+                }
+                console.log('success copying ' + filename);
+                // create thumbnail
+                createThumbnail(newLocation, filename, photo);
+            });
+
+            photo.save(function(err) {
+                if(err) {
+                    console.log(err);
+                    return console.error(err);
+                }
+                console.log('saved ' + filename);
+                // res.send(photo);
+                photos.push(photo);
+            });
         });
 
         form.on('end', function() {
             // var photos = [];
-            for(var i = 0; i < files.length; i++) {
-                var tempPath = this.openedFiles[i].path;
-                var date = new Date();
-                var filename = date.getTime() + '-' + this.openedFiles[i].name;
-                var newLocation = path.join(__dirname, '../public/uploads/');
+            // for(var i = 0; i < files.length; i++) {
 
-                var photo = new Photo({
-                    path: '/uploads/' + filename,
-                    caption: fields.caption,
-                    takenBy: {
-                        id: req.user._id,
-                        username: req.user.username
-                    },
-                    thumbnail: '/uploads/thumbs/' + filename,
-                    date: date
-                });
 
-                fs.copy(tempPath, newLocation + filename, function(err) {
-                    if(err) {
-                        console.log(err);
-                        return console.error(err);
-                    }
-                    console.log('success copying ' + filename);
-                    // create thumbnail
-                    createThumbnail(newLocation, filename, photo);
-                });
-
-                photo.save(function(err) {
-                    if(err) {
-                        console.log(err);
-                        return console.error(err);
-                    }
-                    console.log('saved ' + filename);
-                    // res.send(photo);
-                    photos.push(photo);
-                });
-
-            }
+            // }
             return res.send(photos);
         });
 
