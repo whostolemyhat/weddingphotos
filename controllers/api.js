@@ -88,41 +88,43 @@ router
         });
 
         form.on('end', function() {
+            for(var i = 0; i < files.length; i++) {
+                var tempPath = this.openedFiles[i].path;
+                var date = new Date();
+                var filename = date.getTime() + '-' + this.openedFiles[i].name;
+                var newLocation = path.join(__dirname, '../public/uploads/');
 
-            var tempPath = this.openedFiles[0].path;
-            var date = new Date();
-            var filename = date.getTime() + '-' + this.openedFiles[0].name;
-            var newLocation = path.join(__dirname, '../public/uploads/');
+                var photo = new Photo({
+                    path: '/uploads/' + filename,
+                    caption: fields.caption,
+                    takenBy: {
+                        id: req.user._id,
+                        username: req.user.username
+                    },
+                    thumbnail: '/uploads/thumbs/' + filename,
+                    date: date
+                });
 
-            var photo = new Photo({
-                path: '/uploads/' + filename,
-                caption: fields.caption,
-                takenBy: {
-                    id: req.user._id,
-                    username: req.user.username
-                },
-                thumbnail: '/uploads/thumbs/' + filename,
-                date: date
-            });
+                fs.copy(tempPath, newLocation + filename, function(err) {
+                    if(err) {
+                        console.log(err);
+                        return console.error(err);
+                    }
+                    console.log('success');
+                    // create thumbnail
+                    createThumbnail(newLocation, filename, photo);
+                });
 
-            fs.copy(tempPath, newLocation + filename, function(err) {
-                if(err) {
-                    console.log(err);
-                    return console.error(err);
-                }
-                console.log('success');
-                // create thumbnail
-                createThumbnail(newLocation, filename, photo);
-            });
+                photo.save(function(err) {
+                    if(err) {
+                        console.log(err);
+                        return console.error(err);
+                    }
+                    res.send(photo);
+                });
 
-
-            return photo.save(function(err) {
-                if(err) {
-                    console.log(err);
-                    return console.error(err);
-                }
                 return res.send(photo);
-            });
+            }
         });
 
         form.parse(req);
