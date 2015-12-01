@@ -57,5 +57,6 @@
     "gulp-sourcemaps": "^1.5.1",
     "gulp-watch": "^4.2.0",
     "tiny-lr": "^0.1.5"
-  }
+  },
+  "engines": { "node": "^5.0.0" }
 }
