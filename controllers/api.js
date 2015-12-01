@@ -1,16 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var Photo = require('../models/photo');
-var formidable = require('formidable');
-var fs = require('fs-extra');
-var lwip = require('lwip');
-var path = require('path');
-var io = require('../controllers/io');
-var passport = require('passport');
-var authController = require('../controllers/auth')(passport);
+'use strict';
 
-var bodyParser = require('body-parser');
-var tokenAuth = require('./tokenauth');
+const express = require('express');
+const router = express.Router();
+const Photo = require('../models/photo');
+const formidable = require('formidable');
+const fs = require('fs-extra');
+const lwip = require('lwip');
+const path = require('path');
+const io = require('../controllers/io');
+const passport = require('passport');
+const authController = require('../controllers/auth')(passport);
+
+const bodyParser = require('body-parser');
+const tokenAuth = require('./tokenauth');
 
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n)
@@ -20,7 +22,7 @@ function isNumber(n) {
 // using formidable instead
 
 function createThumbnail(filepath, filename, photo) {
-    'use strict';
+    
 
     console.log('creating thumbnail for ' + filename);
     
@@ -57,13 +59,11 @@ function isLoggedIn(req, res, next) {
 
 /* under /api */
 router
-    .get('/',  function(req, res) {
-        'use strict';
+    .get('/', (req, res) => {
         res.render('upload');
     })
-    .get('/photos', function(req, res) {
-        'use strict';
-        return Photo.find().sort({ date: -1 }).exec(function(err, photos) {
+    .get('/photos', (req, res) => {
+        return Photo.find().sort({ date: -1 }).exec((err, photos) => {
             if(err) {
                 console.error(err);
             } else {
@@ -93,7 +93,7 @@ router
     })
 
     .post('/photos', isLoggedIn, function(req, res) {
-        'use strict';
+        
 
         console.log('posted form');
         var photos = [];
@@ -215,71 +215,71 @@ router
     })
     
     // copy - use for rpi
-    .post('/autophoto', [bodyParser(), tokenAuth], function(req, res) {
-        if(req.user) {
-            console.log('posted form');
-            var photos = [];
+    // .post('/autophoto', [bodyParser(), tokenAuth], function(req, res) {
+    //     if(req.user) {
+    //         console.log('posted form');
+    //         var photos = [];
 
-            var form = new formidable.IncomingForm();
-            var files = [];
-            var fields = {};
+    //         var form = new formidable.IncomingForm();
+    //         var files = [];
+    //         var fields = {};
 
-            form.on('field', function(field, value) {
-                fields[field] =  value;
-            });
+    //         form.on('field', function(field, value) {
+    //             fields[field] =  value;
+    //         });
 
-            form.on('file', function(field, file) {
-                console.log(file.name);
-                files.push([field, file]);
-            });
+    //         form.on('file', function(field, file) {
+    //             console.log(file.name);
+    //             files.push([field, file]);
+    //         });
 
-            form.on('end', function() {
+    //         form.on('end', function() {
 
-                var tempPath = this.openedFiles[0].path;
-                var date = new Date();
-                var filename = date.getTime() + '-' + this.openedFiles[0].name;
-                var newLocation = path.join(__dirname, '../public/uploads/');
+    //             var tempPath = this.openedFiles[0].path;
+    //             var date = new Date();
+    //             var filename = date.getTime() + '-' + this.openedFiles[0].name;
+    //             var newLocation = path.join(__dirname, '../public/uploads/');
 
-                var photo = new Photo({
-                    path: '/uploads/' + filename,
-                    caption: fields.caption,
-                    takenBy: {
-                        id: req.user._id,
-                        username: req.user.username
-                    },
-                    thumbnail: '/uploads/thumbs/' + filename,
-                    date: date
-                });
+    //             var photo = new Photo({
+    //                 path: '/uploads/' + filename,
+    //                 caption: fields.caption,
+    //                 takenBy: {
+    //                     id: req.user._id,
+    //                     username: req.user.username
+    //                 },
+    //                 thumbnail: '/uploads/thumbs/' + filename,
+    //                 date: date
+    //             });
 
-                fs.copy(tempPath, newLocation + filename, function(err) {
-                    if(err) {
-                        console.log(err);
-                        return console.error(err);
-                    }
-                    console.log('success');
-                    // create thumbnail
-                    createThumbnail(newLocation, filename, photo);
-                });
+    //             fs.copy(tempPath, newLocation + filename, function(err) {
+    //                 if(err) {
+    //                     console.log(err);
+    //                     return console.error(err);
+    //                 }
+    //                 console.log('success');
+    //                 // create thumbnail
+    //                 createThumbnail(newLocation, filename, photo);
+    //             });
 
 
-                return photo.save(function(err) {
-                    if(err) {
-                        console.log(err);
-                        return console.error(err);
-                    }
-                    return res.send(photo);
-                });
-            });
+    //             return photo.save(function(err) {
+    //                 if(err) {
+    //                     console.log(err);
+    //                     return console.error(err);
+    //                 }
+    //                 return res.send(photo);
+    //             });
+    //         });
 
-            form.parse(req);
-        } else {
-            res.end('No!');
-        }
-    })
+    //         form.parse(req);
+    //     } else {
+    //         res.end('No!');
+    //     }
+    // })
 
     .get('/photos/:id', function(req, res) {
         // get one photo
-        'use strict';
+        
         return Photo.findById(req.params.id, function(err, photo) {
             if(err) {
                 console.log(err);
@@ -290,7 +290,7 @@ router
         });
     })
     .put('/photos/:id', function(req, res) {
-        'use strict';
+        
         // TODO: what needs to be updatable?
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
@@ -313,7 +313,7 @@ router
         });
     })
     .delete('/photos/:id', isLoggedIn, function(req, res) {
-        'use strict';
+        
         // photo.takenBy.id is a string
         var userId = String(req.user._id);
         return Photo.findById(req.params.id, function(err, photo) {

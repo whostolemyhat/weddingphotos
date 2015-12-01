@@ -40,12 +40,12 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.get('/tokentest', [bodyParser(), tokenAuth], function(req, res, next) {
-        if(req.user) {
-            res.json(req.user);
-        }
-        res.end('nope');
-    });
+    // app.get('/tokentest', [bodyParser(), tokenAuth], function(req, res, next) {
+    //     if(req.user) {
+    //         res.json(req.user);
+    //     }
+    //     res.end('nope');
+    // });
     // app.post('/token', function(req, res) {
     //     var username = req.body.username;
     //     var password = req.body.password;
