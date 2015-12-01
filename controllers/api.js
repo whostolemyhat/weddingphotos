@@ -107,15 +107,15 @@ router
         });
 
         form.on('file', function(field, file) {
+            // TODO: move all processing here for multiple uploads
             console.log(file.name);
             files.push([field, file]);
-        });
 
-        form.on('end', function() {
-
-            var tempPath = this.openedFiles[0].path;
+            // var tempPath = this.openedFiles[i].path;
+            var tempPath = file.path;
             var date = new Date();
-            var filename = date.getTime() + '-' + this.openedFiles[0].name;
+            // var filename = date.getTime() + '-' + this.openedFiles[i].name;
+            var filename = date.getTime() + '-' + file.name;
             var newLocation = path.join(__dirname, '../public/uploads/');
 
             var photo = new Photo({
@@ -134,19 +134,29 @@ router
                     console.log(err);
                     return console.error(err);
                 }
-                console.log('success');
+                console.log('success copying ' + filename);
                 // create thumbnail
                 createThumbnail(newLocation, filename, photo);
             });
 
-
-            return photo.save(function(err) {
+            photo.save(function(err) {
                 if(err) {
                     console.log(err);
                     return console.error(err);
                 }
-                return res.send(photo);
+                console.log('saved ' + filename);
+                // res.send(photo);
+                photos.push(photo);
             });
+        });
+
+        form.on('end', function() {
+            // var photos = [];
+            // for(var i = 0; i < files.length; i++) {
+
+
+            // }
+            return res.send(photos);
         });
 
         form.parse(req);

@@ -60,7 +60,7 @@
        <div class="form__wrapper upload__wrapper">
             <h3 class="beta">Upload a photo</h3>
             <form action="/api/photos" method="post" enctype="multipart/form-data" id="upload" class="form form--upload">
-                <div class="form--half form--file-upload"><input type="file" name="photo" id="photo"></div>
+                <div class="form--half form--file-upload"><input type="file" name="photo" id="photo" multiple="multiple"></div>
                 <div class="form--half"><input type="submit" value="Upload" id="submit" class="button"></div>
             </form>
             <div class="progress fadeOut">
