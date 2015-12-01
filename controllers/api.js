@@ -12,6 +12,10 @@ var authController = require('../controllers/auth')(passport);
 var bodyParser = require('body-parser');
 var tokenAuth = require('./tokenauth');
 
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n)
+}
+
 // NOTE: Bodyparser does not handle multipart forms
 // using formidable instead
 
@@ -66,6 +70,26 @@ router
                 return res.send(photos);
             }
         });
+    })
+
+    .get('/page/:page', function(req, res) {
+        var pageLength = 20;
+        var page = 0;
+        if(req.params.page && isNumber(req.params.page)) {
+            page = req.params.page - 1;
+        }
+
+        return Photo.find()
+            .sort({ date: -1 })
+            .skip(page * pageLength)
+            .limit(pageLength)
+            .exec(function(err, photos) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    return res.send(photos);
+                }
+            });
     })
 
     .post('/photos', isLoggedIn, function(req, res) {
